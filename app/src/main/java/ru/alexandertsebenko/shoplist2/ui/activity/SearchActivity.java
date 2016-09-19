@@ -44,13 +44,8 @@ public class SearchActivity extends Activity{
         mList = (ListView) findViewById(R.id.list);
         mButton = (Button) findViewById(R.id.btn_start_search);
         Dictionary.getInstance().ensureLoaded(getResources());
-
-
-
     }
-
     public void onClick(View view) {
-
         String query = mEditView.getText().toString();
         mTextView.setText(getString(R.string.search_results, query));
         DataSource dataSource = new DataSource(this);
