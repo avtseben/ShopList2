@@ -16,8 +16,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.ShopListActivity"></activity>
-        <activity android:name=".ui.activity.SearchActivity"></activity>
+        <activity android:name=".ui.activity.SearchActivity"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+        </activity>
         <activity android:name=".ui.activity.WordActivity"></activity>
-    </application>
+        <meta-data
+            android:name="android.app.searchable"
+            android:resource="@xml/searchable">
+        </meta-data>
+</application>
 
 </manifest>

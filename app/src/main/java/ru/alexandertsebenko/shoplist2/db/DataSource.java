@@ -37,7 +37,7 @@ public class DataSource {
 
     public Cursor getMatches(String query){
         return mDataBase.query(TABLE,
-                new String[]{ID,PNAME,PCATEG},
+                new String[]{ID,PNAME},//Для CursorAdapter обязательно нужен ID
                 DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%'",
                 null,null,null,null);
     }
