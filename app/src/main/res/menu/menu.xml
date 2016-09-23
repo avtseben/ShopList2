@@ -7,5 +7,5 @@
         android:id="@+id/search_record"
         android:icon="@drawable/ic_search_black_24dp"
         my:showAsAction="always|collapseActionView"
-        my:actionViewClass="android.support.v7.widget.SearchView" />
+        my:actionViewClass="android.widget.AutoCompleteTextView" />
 </menu>
