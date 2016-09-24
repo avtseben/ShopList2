@@ -15,15 +15,35 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_NAME = "name";
+    public static final String TABLE_SHOP_LISTS = "shop_lists";
+    public static final String COLUMN_DATE = "date";
+    public static final String TABLE_PRODUCT_INSTANCES = "product_instances";
+    public static final String COLUMN_SHOPLIST_ID = "showlist_id";
+    public static final String COLUMN_PRODUCT_ID = "product_id";
+    public static final String COLUMN_QUANTITY = "quantity";
+    public static final String COLUMN_MEASURE_ID = "measure_id";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PRODUCTS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_CATEGORY
             + " text, " + COLUMN_NAME
             + " text);";
+    private static final String SHOPLIST_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_SHOP_LISTS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_DATE
+            + " text, " + COLUMN_NAME
+            + " text);";
+    private static final String PRODUCT_INSTANCES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PRODUCT_INSTANCES + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_SHOPLIST_ID
+            + " integer, " + COLUMN_PRODUCT_ID
+            + " integer, " + COLUMN_QUANTITY
+            + " integer, " + COLUMN_MEASURE_ID
+            + " integer);";
+
 
     private String makeSQLInsert(String category, String name) {
         String s = "INSERT INTO "
@@ -41,6 +61,10 @@ public class DbHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase database) {
         database.execSQL(PRODUCT_TABLE_CREATE);
+        database.execSQL(PRODUCT_INSTANCES_TABLE_CREATE);
+        database.execSQL(SHOPLIST_TABLE_CREATE);
+
+        //Load data
         ArrayList<String> inserts = makeArrayOfInserts();
         for (String s : inserts) {
             Log.d(getClass().getSimpleName(),s);
@@ -51,6 +75,8 @@ public class DbHelper extends SQLiteOpenHelper{
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_INSTANCES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP_LISTS);
         onCreate(db);
     }
     private ArrayList<String> makeArrayOfInserts() {

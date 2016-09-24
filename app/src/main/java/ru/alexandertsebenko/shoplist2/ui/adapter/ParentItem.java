@@ -3,6 +3,7 @@ package ru.alexandertsebenko.shoplist2.ui.adapter;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
@@ -12,8 +13,10 @@ public class ParentItem implements ParentListItem {
     List<Product> mProductList;
     String mDrawableIdName;
 
-    public ParentItem(String drawableIdName) {
+    public ParentItem(String drawableIdName, Product product) {
         mDrawableIdName = drawableIdName;
+        mProductList = new ArrayList<>();
+        addProductToList(product);
     }
     public ParentItem(List productList) {
         mProductList = productList;

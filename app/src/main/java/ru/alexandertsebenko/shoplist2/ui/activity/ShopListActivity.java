@@ -3,6 +3,7 @@ package ru.alexandertsebenko.shoplist2.ui.activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -17,6 +18,8 @@ import android.widget.Toast;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
+import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
 
@@ -24,15 +27,18 @@ public class ShopListActivity extends AppCompatActivity{
 
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
+    private FragmentManager mFragManager;
+    private final String LIST_FRAGMENT_TAG = "slft";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
 
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fl_fragment_container, new ProductListFragment(), "PROD_LIST");
+        //Список продуктов представлен во фрагменте
+        mFragManager = getSupportFragmentManager();
+        FragmentTransaction ft = mFragManager.beginTransaction();
+        ft.replace(R.id.fl_fragment_container, new ProductListFragment(), LIST_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
     }
@@ -73,7 +79,10 @@ public class ShopListActivity extends AppCompatActivity{
         actionBar.setCustomView(v);
     }
     private void productSelected(Product product) {
-        Toast.makeText(this,product.getName(),Toast.LENGTH_SHORT).show();
+        ProductListFragment plf = (ProductListFragment) mFragManager.findFragmentByTag(LIST_FRAGMENT_TAG);
+        //Всё. Продукт мы нашли, теперь передаём его фрагменту которы отвечает за работу со списком:
+        //запись в БД, RecyclerView и тд
+        plf.addProduct(product);
     }
 
 
