@@ -24,7 +24,7 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_MEASURE_ID = "measure_id";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
 
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PRODUCTS + "(" + COLUMN_ID
@@ -86,9 +86,9 @@ public class DbHelper extends SQLiteOpenHelper{
         inserts.add(makeSQLInsert("bread","булка"));
         inserts.add(makeSQLInsert("canned_goods","сайра"));
         inserts.add(makeSQLInsert("chick","курица"));
-        inserts.add(makeSQLInsert("coffe","кофе"));
+        inserts.add(makeSQLInsert("coffee","кофе"));
         inserts.add(makeSQLInsert("fish","минтай"));
-        inserts.add(makeSQLInsert("friut","апельсины"));
+        inserts.add(makeSQLInsert("fruit","апельсины"));
         inserts.add(makeSQLInsert("groats","лапша"));
         inserts.add(makeSQLInsert("household_chemicals","пемоксоль"));
         inserts.add(makeSQLInsert("hygiene","зубная паста"));
@@ -99,6 +99,7 @@ public class DbHelper extends SQLiteOpenHelper{
         inserts.add(makeSQLInsert("seasoning","прованские травы"));
         inserts.add(makeSQLInsert("sweets","шоколад"));
         inserts.add(makeSQLInsert("vegetables","помидоры"));
+        inserts.add(makeSQLInsert("vegetables","очень длинное название продукта, такое что нигде не влезет"));
         return inserts;
     }
 }

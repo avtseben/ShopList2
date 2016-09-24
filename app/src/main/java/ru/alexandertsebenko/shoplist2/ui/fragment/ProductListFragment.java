@@ -35,6 +35,7 @@ public class ProductListFragment extends Fragment {
 
         mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         return view;
     }
 
