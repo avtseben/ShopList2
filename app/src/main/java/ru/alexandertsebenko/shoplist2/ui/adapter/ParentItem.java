@@ -6,37 +6,33 @@ import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import java.util.ArrayList;
 import java.util.List;
 
-import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 
 public class ParentItem implements ParentListItem {
 
-    List<Product> mProductList;
+    List<ProductInstance> mProductInstanceList;
     String mDrawableIdName;
 
-    public ParentItem(String drawableIdName, Product product) {
+    public ParentItem(String drawableIdName, ProductInstance productInstance) {
         mDrawableIdName = drawableIdName;
-        mProductList = new ArrayList<>();
-        addProductToList(product);
+        mProductInstanceList = new ArrayList<>();
+        addProductInsToList(productInstance);
     }
-    public ParentItem(List productList) {
+/*    public ParentItem(List productList) {
         mProductList = productList;
-    }
+    }*/
 
-    public void addProductToList (Product product) {
-        mProductList.add(product);
+    public void addProductInsToList (ProductInstance productInstance) {
+        mProductInstanceList.add(productInstance);
     }
 
     public String getName() {
         return mDrawableIdName;
     }
 
-    public void setProductList(List<Product> productList) {
-        mProductList = productList;
-    }
-
     @Override
     public List<?> getChildItemList() {
-        return mProductList;
+        return mProductInstanceList;
     }
 
     @Override

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ChildProductViewHolder;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ParentItem;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
@@ -57,7 +58,7 @@ public class ProductListFragment extends Fragment {
         for(ParentItem pi : mParentItemList){
             //Если продукты такой категории уже есть в списке
             if(pi.getName().equals(product.getCategory())) {
-                pi.addProductToList(product);
+                pi.addProductInsToList(createProductInstance(product));
                 productAdded = true;
                 break;
             }
@@ -65,20 +66,22 @@ public class ProductListFragment extends Fragment {
         //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
         //продукт то создаём эту категорию и кладём в неё продукт
         if(!productAdded) {
-            mParentItemList.add(new ParentItem(product.getCategory(),product));
+            mParentItemList.add(new ParentItem(product.getCategory(),
+                    createProductInstance(product)));
         }
         return mParentItemList;
     }
-    public void addProduct(Product product) {
-        reloadAdapter(product);
+    private ProductInstance createProductInstance(Product product){
+        return new ProductInstance(1,product,1,"штука");//TODO: хардкод заглушка
+        //экземпляр покупки 1 штука
     }
-    private void reloadAdapter(Product product) {
+    public void addProduct(Product product) {
         mAdapter = new ShopListAdapter(getContext(),addProductToList(product));
         mRecyclerView.setAdapter(mAdapter);
     }
     private void deleteItem(int position) {
-        Product pr = (Product)mAdapter.getListItem(position);
-        Toast.makeText(getContext(),"remove pos: " + pr.getName(),Toast.LENGTH_SHORT).show();
+        ProductInstance pri = (ProductInstance)mAdapter.getListItem(position);
+        Toast.makeText(getContext(),"remove pos: " + pri.getProduct().getName(),Toast.LENGTH_SHORT).show();
     }
     private void setUpItemTouchHelper(){
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(

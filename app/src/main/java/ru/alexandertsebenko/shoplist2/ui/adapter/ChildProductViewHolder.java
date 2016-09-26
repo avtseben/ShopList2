@@ -7,14 +7,15 @@ import com.bignerdranch.expandablerecyclerview.ViewHolder.ChildViewHolder;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 
 public class ChildProductViewHolder extends ChildViewHolder {
-    TextView mProductView;
+    TextView mProductInstanceView;
     public ChildProductViewHolder(View itemView){
         super(itemView);
-        mProductView = (TextView) itemView.findViewById(R.id.tv_product_name);
+        mProductInstanceView = (TextView) itemView.findViewById(R.id.tv_product_name);
     }
-    public void bind(Product product){
-        mProductView.setText(product.getName());
+    public void bind(ProductInstance productInstance){
+        mProductInstanceView.setText(productInstance.getProduct().getName());
     }
 }

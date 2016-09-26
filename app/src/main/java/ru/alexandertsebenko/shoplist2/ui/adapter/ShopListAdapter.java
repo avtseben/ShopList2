@@ -13,6 +13,7 @@ import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 
 public class ShopListAdapter extends ExpandableRecyclerAdapter<ParentCategoryViewHolder,ChildProductViewHolder> {
 
@@ -43,8 +44,8 @@ public class ShopListAdapter extends ExpandableRecyclerAdapter<ParentCategoryVie
 
     @Override
     public void onBindChildViewHolder(ChildProductViewHolder childProductViewHolder, int position, Object childListItem) {
-        Product product = (Product) childListItem;
-        childProductViewHolder.bind(product);
+        ProductInstance productInstance = (ProductInstance) childListItem;
+        childProductViewHolder.bind(productInstance);
     }
 
     @Override
