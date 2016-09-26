@@ -47,4 +47,8 @@ public class ShopListAdapter extends ExpandableRecyclerAdapter<ParentCategoryVie
         childProductViewHolder.bind(product);
     }
 
+    @Override
+    public Object getListItem(int position) {
+        return super.getListItem(position);
+    }
 }
