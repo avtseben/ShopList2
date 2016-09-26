@@ -71,6 +71,17 @@ public class ProductListFragment extends Fragment {
         }
         return mParentItemList;
     }
+    private List<ParentItem> removeProductFromList(ProductInstance prodIns) {
+        boolean productAdded = false;
+        for(ParentItem pi : mParentItemList){
+            if(pi.getName().equals(prodIns.getProduct().getCategory())) {
+                pi.removeChildFromParent(prodIns);
+                productAdded = true;
+                break;
+            }
+        }
+        return mParentItemList;
+    }
     private ProductInstance createProductInstance(Product product){
         return new ProductInstance(1,product,1,"штука");//TODO: хардкод заглушка
         //экземпляр покупки 1 штука
@@ -81,6 +92,9 @@ public class ProductListFragment extends Fragment {
     }
     private void deleteItem(int position) {
         ProductInstance pri = (ProductInstance)mAdapter.getListItem(position);
+        mAdapter = new ShopListAdapter(getContext(),removeProductFromList(pri));
+        mAdapter.notifyItemRemoved(position);
+        mRecyclerView.setAdapter(mAdapter);
         Toast.makeText(getContext(),"remove pos: " + pri.getProduct().getName(),Toast.LENGTH_SHORT).show();
     }
     private void setUpItemTouchHelper(){

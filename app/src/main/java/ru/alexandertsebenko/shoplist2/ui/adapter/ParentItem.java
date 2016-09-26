@@ -25,6 +25,9 @@ public class ParentItem implements ParentListItem {
     public void addProductInsToList (ProductInstance productInstance) {
         mProductInstanceList.add(productInstance);
     }
+    public void removeChildFromParent(ProductInstance productInstance){
+       mProductInstanceList.remove(productInstance);
+    }
 
     public String getName() {
         return mDrawableIdName;
