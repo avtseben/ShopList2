@@ -10,7 +10,4 @@
         android:id="@+id/iv_category"
         android:elevation="20dp"
         />
-
-
-
 </LinearLayout>

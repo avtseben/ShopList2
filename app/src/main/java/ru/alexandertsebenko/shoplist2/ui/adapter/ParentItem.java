@@ -34,7 +34,7 @@ public class ParentItem implements ParentListItem {
     }
 
     @Override
-    public List<?> getChildItemList() {
+    public List<ProductInstance> getChildItemList() {
         return mProductInstanceList;
     }
 

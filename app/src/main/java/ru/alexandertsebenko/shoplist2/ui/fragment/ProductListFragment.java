@@ -71,17 +71,6 @@ public class ProductListFragment extends Fragment {
         }
         return mParentItemList;
     }
-    private List<ParentItem> removeProductFromList(ProductInstance prodIns) {
-        boolean productAdded = false;
-        for(ParentItem pi : mParentItemList){
-            if(pi.getName().equals(prodIns.getProduct().getCategory())) {
-                pi.removeChildFromParent(prodIns);
-                productAdded = true;
-                break;
-            }
-        }
-        return mParentItemList;
-    }
     private ProductInstance createProductInstance(Product product){
         return new ProductInstance(1,product,1,"штука");//TODO: хардкод заглушка
         //экземпляр покупки 1 штука
@@ -89,13 +78,6 @@ public class ProductListFragment extends Fragment {
     public void addProduct(Product product) {
         mAdapter = new ShopListAdapter(getContext(),addProductToList(product));
         mRecyclerView.setAdapter(mAdapter);
-    }
-    private void deleteItem(int position) {
-        ProductInstance pri = (ProductInstance)mAdapter.getListItem(position);
-        mAdapter = new ShopListAdapter(getContext(),removeProductFromList(pri));
-        mAdapter.notifyItemRemoved(position);
-        mRecyclerView.setAdapter(mAdapter);
-        Toast.makeText(getContext(),"remove pos: " + pri.getProduct().getName(),Toast.LENGTH_SHORT).show();
     }
     private void setUpItemTouchHelper(){
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
@@ -121,7 +103,7 @@ public class ProductListFragment extends Fragment {
                     public void onSwiped (RecyclerView.ViewHolder viewHolder, int direction) {
                         if(viewHolder.getClass().equals(ChildProductViewHolder.class)) {
                             int position = viewHolder.getAdapterPosition();
-                            deleteItem(position);
+                            mAdapter.deleteProductInstance(position);
                         }
                     }
                 };

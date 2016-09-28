@@ -2,6 +2,7 @@ package ru.alexandertsebenko.shoplist2.ui.adapter;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;

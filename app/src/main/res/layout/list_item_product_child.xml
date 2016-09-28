@@ -20,7 +20,6 @@
             android:id="@+id/tv_product_name"
             android:textAppearance="?android:attr/textAppearanceLarge"
             />
-
     </RelativeLayout>
 
 </android.support.v7.widget.CardView>
