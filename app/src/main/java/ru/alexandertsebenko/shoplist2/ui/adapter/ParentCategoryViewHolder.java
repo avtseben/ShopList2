@@ -21,7 +21,7 @@ public class ParentCategoryViewHolder extends ParentViewHolder {
         int resId;
         try {
             resId = ResourceManipulator.getResIdByStringName(itemView.getContext(),
-                    prodCat.getName(), "drawable");
+                    prodCat.getImageName(), "drawable");
             mCategoryImageView.setImageResource(resId);
         } catch (NullPointerException e) {
             mCategoryImageView.setImageResource(R.drawable.vegetables);

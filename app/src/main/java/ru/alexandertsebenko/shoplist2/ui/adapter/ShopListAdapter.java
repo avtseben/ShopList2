@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListAdapter;
 
 import com.bignerdranch.expandablerecyclerview.Adapter.ExpandableRecyclerAdapter;
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
@@ -63,7 +64,7 @@ public class ShopListAdapter extends ExpandableRecyclerAdapter<ParentCategoryVie
         //Возможно это и некрасиво но работает.
         //метод возвращает масив из двух об
         Object[] parentItemWithPosition =
-        removeCildItem(position);
+        removeChildItem(position);
 
         ParentItem pI = (ParentItem) parentItemWithPosition[0];
         if(pI.getChildItemList().size() == 0){
@@ -80,17 +81,17 @@ public class ShopListAdapter extends ExpandableRecyclerAdapter<ParentCategoryVie
      * @param position
      * @return
      */
-    private Object[] removeCildItem(int position){
+    private Object[] removeChildItem(int position){
         int childPosition = 0;
         int parentPosition = 0;
-        boolean parenFound = false;
+        boolean parentFound = false;
         for(int i = position; i > 0; i--) {
             if(mItemList.get(i).getClass().equals(ParentWrapper.class)) {
-                if(!parenFound){
-                    parenFound = true;
+                if(!parentFound){
+                    parentFound = true;
                 }
                 parentPosition++;
-            } else if(!parenFound) {
+            } else if(!parentFound) {
                 childPosition++;
             }
         }
@@ -99,8 +100,6 @@ public class ShopListAdapter extends ExpandableRecyclerAdapter<ParentCategoryVie
         List<ProductInstance> childList = p.getChildItemList();
         childList.remove(childPosition);
         notifyChildItemRemoved(parentPosition,childPosition);
-        HashMap<Integer,ParentItem> map = new HashMap<>();
-        ArrayList<Object> l = new ArrayList<>();
         Object[] o = {p,Integer.valueOf(parentPosition)};
         return o;
     }

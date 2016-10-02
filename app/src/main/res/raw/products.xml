@@ -1,0 +1,592 @@
+﻿<products>
+<category
+	name = "Молочные продукты"
+	image = "milk">
+		<product>Молоко</product>
+		<product>Кефир</product>
+		<product>Сметана</product>
+		<product>Масло</product>
+        <product>Творог</product>
+        <product>Сливочное масло</product>
+        <product>Сыр</product>
+		<product>Сырок</product>
+		<product>Сырок плавленный</product>
+		<product>Сливки</product>
+		<product>Йогурт</product>
+		<product>Простокваша</product>
+		<product>Творожок</product>
+		<product>Ряженка</product>
+		<product>Нарине</product>
+		<product>Сгущенка</product>
+		<product>Мороженое</product>
+		<product>Сыворотка</product>
+		<product>Маргарин</product>
+		<product>Яйца</product>
+		<product>Молочный коктейль</product>
+                
+</category>
+<category
+	name = "Крупы"
+	image = "groats">
+		<product>Греча</product>
+		<product>Овсянка</product>
+		<product>Перловка</product>
+		<product>Ячневая</product>
+		<product>Пшенная</product>
+		<product>Рис</product>
+		<product>Манная</product>
+		<product>Булгур</product>
+		<product>Дикий рис</product>
+		<product>Кукурузная</product>
+		<product>Ячменная</product>
+		<product>Просо</product>
+		<product>Нут</product>
+		<product>Фасоль</product>
+		<product>Горох</product>
+		<product>Киноа</product>
+		<product>Полба</product>
+		<product>Рож</product>
+		<product>Ризотто</product>
+		<product>Мюсли</product>
+		<product>Кукурузные хлопья</product>		
+</category>
+
+<category
+	name = "Мучные изделия"
+	image = "noodle">
+	<product>Макароны</product>
+		<product>Спагетти</product>
+		<product>Рисовая лапша</product>
+		<product>Гречневая лапша</product>
+		<product>Лапша</product>
+		<product>Канеллони</product>
+		<product>Тальятелле (гнезда)</product>
+		<product>Вермишель</product>
+		<product>Фунчоза</product>
+		<product>Рамен лапша</product>
+		<product>Яичная лапша</product>
+		<product>Соба лапша</product>
+		<product>Лазанья</product>
+		<product>Фетучини</product>
+		<product>Паста</product>
+		<product>Фарфалле</product>
+		<product>Лапша "Бантики"</product>
+		<product>Макароны Ракушки</product>
+		<product>Равиоли</product>
+		<product>Конкильони</product>
+		<product>Вермишель паутинка</product>
+		<product>Макароны спираль</product>
+		<product>Макароны рожки</product>
+		<product>Сметана</product>
+		<product>Мука</product>
+		<product>Мука пшеничная</product>
+		<product>Мука цельнозерновая</product>
+		<product>Мука ржаная</product>
+		<product>Мука кукурузная</product>
+		<product>Мука овсяная</product>
+		<product>Смесь для блинов</product>
+		<product>Смесь для оладьев</product>
+		<product>Льняная мука</product>
+		<product>Мука рисовая</product>	
+                <product>Рисовая бумага</product>                
+</category>
+<category
+	name = "Хлеб"
+	image = "bread">
+		<product>Хлеб</product>
+		<product>Батон</product>
+		<product>Французский батон</product>
+                <product>Лаваш</product>
+                <product>Багет</product>
+                <product>Чиабатта</product>
+                <product>Хлебцы</product>
+                <product>Маца</product>
+                <product>Булочки для хот-догов</product>
+                <product>Булочки для гамбургеров</product>
+                <product>Тарталетки</product>
+                <product>Сухари</product>
+                <product>Бородинский</product>
+                <product>Лаваш</product>
+                <product>Бездрожжевой</product>
+                <product>Ржаной</product>
+                <product>Хлеб с семечками</product>
+</category>
+
+<category
+	name = "Овощи"
+	image = "vegetables">
+		<product>Огурец</product>
+		<product>Чеснок</product>
+		<product>Цукини</product>
+		<product>Свекла</product>
+		<product>Тыква</product>
+		<product>Перец сладкий</product>
+		<product>Перец острый</product>
+		<product>Баклажан</product>
+		<product>Кабачок</product>
+		<product>Капуста</product>
+		<product>Картофель</product>
+        <product>Огурец</product>
+		<product>Морковь</product>
+		<product>Брокколи</product>
+		<product>Помидоры</product>
+		<product>Репа</product>
+		<product>Дайкон</product>
+		<product>Пекинская капуста</product>
+		<product>Цветная капуста</product>
+		<product>Черри помидоры</product>
+		<product>Квашенная капуста</product>
+		<product>Имбирь</product>
+		<product>Лук репчатый</product>
+		<product>Черная редька</product>
+		<product>Зеленая редька</product>
+		<product>Кукуруза</product>
+		<product>Огурец</product>
+		<product>Грибы сушеные</product>
+		<product>Грибы свежие</product>	
+</category>
+
+<category
+	name = "Фрукты"
+	image = "fruit">
+		<product>Апельсин</product>
+		<product>Абрикосы</product>
+		<product>Грейпфрут</product>
+		<product>Ананас</product>
+		<product>Слива</product>
+		<product>Арбуз</product>
+		<product>Виноград</product>
+		<product>Вишня</product>
+		<product>Клубника</product>
+		<product>Авокадо</product>
+		<product>Банан</product>
+		<product>Гранат</product>
+		<product>Груша</product>
+		<product>Дыня</product>
+		<product>Инжир</product>
+		<product>Киви</product>
+		<product>Лайм</product>
+		<product>Лимон</product>
+		<product>Мандарины</product>
+		<product>Хурма</product>
+		<product>Яблоки</product>
+		<product>Яблоки</product>
+
+</category>
+
+<category
+	name = "Замороженные овощи/ягоды"
+	image = "berry">
+		<product>Мексиканская смесь</product>
+		<product>Замороженная брокколи</product>
+		<product>Замороженные грибы</product>
+		<product>Замороженный болгарский перец</product>
+		<product>Горошек</product>
+		<product>Замороженная морковь</product>
+		<product>Замороженная кукуруза</product>
+		<product>Замороженная стручковая фасоль</product>
+		<product>Замороженная цветная капуста</product>
+		<product>Замороженная брусника</product>
+		<product>Замороженная клюква</product>
+		<product>Замороженная вишня</product>
+		<product>Замороженная ежевика</product>
+		<product>Замороженная жимолость</product>
+		<product>Замороженная клубника</product>
+		<product>Замороженная малина</product>
+		<product>Замороженная облепиха</product>
+		<product>Замороженная спаржа</product>
+		<product>Замороженная смородина</product>
+		<product>Замороженная черника</product>
+		<product>Замороженная шпинат</product>
+		<product>Замороженная морская капуста</product>
+</category>
+
+<category
+	name = "Алкоголь"
+	image = "alcohol">
+		<product>Ликер</product>
+		<product>Коньяк</product>
+		<product>Вино белое</product>
+		<product>Вино красное</product>
+		<product>Пиво</product>
+		<product>Шампанское</product>
+		<product>Виски</product>
+		<product>Водка</product>
+		<product>Бренди</product>
+		<product>Мартини</product>
+		<product>Ром</product>
+		<product>Текила</product>
+		<product>Сидр</product>
+		<product>Кальвадос</product>
+		<product>Бальзам</product>
+		<product>Вермут</product>
+		<product>Джин</product>
+		<product>Саке</product>
+		<product>Абсент</product>
+		<product>Медовуха</product>
+		<product>Грог</product>
+		<product>Бурбон</product>
+		<product>Ликер</product>
+</category>
+
+<category
+	name = "Бутылированные напитки"
+	image = "bottle">
+		<product>Минералка</product>
+		<product>Вода питьевая</product>
+		<product>Сок</product>
+		<product>Морс</product>
+		<product>Колла</product>
+		<product>Фанта</product>
+		<product>Спрайт</product>
+		<product>Швепс</product>
+		<product>Пепси</product>
+		<product>Лиманад</product>
+		<product>Меринда</product>
+		<product>Квас</product>
+		<product>Меринда</product>		
+</category>
+
+<category
+	name = "Консервы"
+	image = "canned_goods">
+		<product>Сайра конс</product>
+		<product>Килька конс</product>
+		<product>Морская капуста конс</product>
+		<product>Оливки</product>
+		<product>Маслины</product>
+		<product>Кукуруза конс</product>
+		<product>Горошек конс</product>
+		<product>Грибы конс</product>
+		<product>Лечо</product>
+		<product>Томатная паста</product>
+		<product>Фасоль конс</product>
+		<product>Ананасы конс</product>
+		<product>Персики конс</product>
+		<product>Огуцы маринованные</product>
+		<product>Помидоры маринованные</product>
+		<product>Персики конс</product>
+		<product>Шпроты</product>
+		<product>Тушенка</product>
+		<product>Паштет</product>
+		<product>Икра</product>
+		<product>Скумбрия конс</product>
+		<product>Печень трески</product>
+		<product>Сгущеное молоко</product>
+		<product>Компот</product>	
+</category>
+
+<category
+	name = "Курица"
+	image = "chick">
+		<product>Курица</product>
+		<product>Филе куриное</product>
+		<product>Курица половина</product>
+		<product>Бедро куриное</product>
+		<product>Голень куриная</product>
+		<product>Сердечки куриные</product>
+		<product>Желудочки куриные</product>
+		<product>Гусь</product>
+		<product>Утка</product>
+		<product>Филе индейки</product>
+		<product>Голень индейки</product>
+		<product>Крыло индейки</product>
+		<product>Фарш куриный</product>
+		<product>Фарш из индейки</product>			
+</category>
+
+<category
+	name = "Кофе"
+	image = "coffee">
+		<product>Кофе в зернах</product>
+		<product>Кофе молотый</product>
+		<product>Кофе растворимый</product>
+		<product>Цикорий</product>
+		<product>Чай черный</product>
+		<product>Чай зеленый</product>
+		<product>Какао</product>
+			
+</category>
+
+<category
+	name = "Рыба"
+	image = "fish">
+		<product>Горбуша</product>
+		<product>Минтай</product>
+		<product>Селедка</product>
+		<product>Щука</product>
+		<product>Карась</product>
+		<product>Камбала</product>
+		<product>Кижуч</product>
+		<product>Кальмары</product>
+		<product>Креветки</product>
+		<product>Крабовые палочки</product>
+		<product>Семга</product>
+		<product>Форель</product>
+		<product>Скумбрия</product>
+		<product>Хек</product>
+		<product>Палтус</product>
+		<product>Кета</product>			
+</category>
+
+<category
+	name = "Мясо"
+	image = "meat">
+		<product>Свинина</product>
+		<product>Говядина на кости</product>
+		<product>Говядина без кости</product>
+		<product>Баранина</product>
+		<product>Говяжья печень</product>
+		<product>Фарш говяжий</product>
+		<product>Фарш домашний</product>
+		<product>Свиная грудка</product>
+		<product>Сосиски</product>
+		<product>Бекон</product>
+		<product>Ветчина</product>
+		<product>Салями колбаса</product>
+		<product>Вареная колбаса</product>
+		<product>Буженина</product>
+		<product>Язык говяжий</product>
+		<product>Язык свиной</product>
+		<product>Сервелат колбаса</product>
+		<product>Почки говяжие</product>
+		<product>Ребрышки свиные</product>
+		<product>Свиная печень</product>
+		<product>Свиные ноги</product>
+		<product>Ливерная колбаса</product>
+		<product>Свиная рулька</product>
+		<product>Фарш говяжий</product>
+		<product>Фарш домашний</product>
+		<product>Соленое сало</product>
+		<product>Кролик</product>
+		<product>Шашлык</product>
+		<product>Колбаски для жарки</product>
+		<product>Копченая курица</product>					
+</category>
+
+<category
+	name = "Домашние животные"
+	image = "pet">
+		<product>Корм для кошек</product>
+		<product>Корм для собак</product>
+		<product>Корм</product>					
+</category>
+
+<category
+	name = "Соусы"
+	image = "sauce">
+		<product>Кетчуп</product>
+		<product>Майонез</product>
+		<product>Соевый</product>
+		<product>Устричный</product>
+		<product>Подсолнечное масло</product>
+		<product>Оливковое масло</product>
+		<product>Винный уксус</product>
+		<product>Мед</product>
+		<product>Бальзамический уксус</product>
+		<product>Яблочный уксус</product>
+		<product>Горчица</product>
+		<product>Хрен</product>
+		<product>Льняное масло</product>
+		<product>Рисовый уксус</product>
+		<product>Рыбный соус</product>
+		<product>Табаско</product>
+		<product>Васаби</product>					
+</category>
+
+<category
+	name = "Гигиена"
+	image = "hygiene">
+		<product>Зубная паста</product>
+		<product>Зубная щетка</product>
+		<product>Ополаскиватель для рта</product>
+		<product>Мыло туалетное</product>
+		<product>Мыло жидкое</product>
+		<product>Шампунь</product>
+		<product>Бальзам для волос</product>
+		<product>Кондиционер для волос</product>
+		<product>Гель для душа</product>
+		<product>Влажные салфетки</product>
+		<product>Ватные палочки</product>
+		<product>Ватные диски</product>
+		<product>Мыло хозяйственное</product>
+		<product>Детский шампунь</product>
+		<product>Мочалка</product>
+		<product>Дезодарант</product>
+		<product>Прокладки</product>
+		<product>Ежедневные прокладки</product>
+		<product>Тампоны</product>
+		<product>Присыпка детская</product>
+		<product>Маска для волос</product>
+		<product>Пенка для укладки</product>
+		<product>Лак для волос</product>
+		<product>Подгузники</product>					
+</category>
+
+<category
+	name = "Бытовая химия"
+	image = "household_chemicals">
+		<product>Стиральный порошок</product>
+		<product>Средство для мытья посуды</product>
+		<product>Кондиционер для белья</product>
+		<product>Чистящее средство</product>
+		<product>Салфетки бумажные</product>
+		<product>Салфетки для уборки</product>
+		<product>Тряпка для пола</product>
+		<product>Таблетки для посудомоечной машины</product>
+		<product>Отбеливатель</product>
+		<product>Туалетная бумага</product>
+		<product>Бумажные полотенца</product>
+		<product>Резиновые перчатки</product>
+		<product>Губка для посуды</product>
+		<product>Средство для мытья окон</product>
+		<product>Пакеты для мусора</product>
+		<product>Щетка хозяйственная</product>						
+</category>
+
+<category
+	name = "Приправы"
+	image = "seasoning">
+		<product>Гвоздика</product>
+		<product>Кардамон</product>
+		<product>Корица</product>
+		<product>Лавровый лист</product>
+		<product>Перец красный</product>
+		<product>Каперсыи</product>
+		<product>Шафран</product>
+		<product>Тмин</product>
+		<product>Карри</product>
+		<product>Зира</product>
+		<product>Перец черный горошек</product>
+		<product>Перец черный молотый</product>
+		<product>Перец душистый</product>
+		<product>Хмели-сунели</product>
+		<product>Орегано (душица)</product>
+		<product>Куркума</product>
+		<product>Имбирь молотый</product>
+		<product>Горчичный порошок</product>
+        <product>Семена горчицы</product>
+		<product>Имбирь маринованный</product>
+		<product>Майоран</product>
+		<product>Эстрагон</product>
+		<product>Базилиик</product>
+		<product>Кунжут</product>
+		<product>Мак</product>
+		<product>Мускатный орех</product>
+		<product>Мята</product>
+		<product>Розмарин</product>
+        <product>Паприка</product>
+		<product>Тимьян</product>
+		<product>Семена укропа</product>
+		<product>Шалфей</product>
+		<product>Сахар</product>
+		<product>Соль</product>
+		<product>Кариандр</product>
+		<product>Ваниль</product>
+		<product>Итальянские травы</product>
+		<product>Сода</product>
+        <product>Анис</product>
+		<product>Зира</product>
+		<product>Петрушка сушеная</product>
+		<product>Укроп сушеный</product>
+		<product>Смесь перца</product>
+		<product>Приправа для плова</product>
+		<product>Куриный кубик</product>						
+</category>
+
+<category
+	name = "Сладости"
+	image = "sweets">
+		<product>Шоколад белый</product>
+		<product>Шоколад черный</product>
+		<product>Халва</product>
+		<product>Желе</product>
+		<product>Печенье</product>
+		<product>Шоколад молочный</product>
+		<product>Вафли</product>
+		<product>Джем</product>
+		<product>Варенье</product>
+		<product>Зефир</product>
+		<product>Арахисовая паста</product>
+		<product>Шоколадная паста</product>
+		<product>Мармелад</product>
+		<product>Марципан</product>
+		<product>Конфеты шоколадные</product>
+		<product>Карамель</product>
+		<product>Леденцы</product>
+		<product>Щербет</product>
+        <product>Пастила</product>
+		<product>Нуга</product>
+		<product>Галеты</product>
+		<product>Пряники</product>
+		<product>Безе</product>
+		<product>Торт</product>
+		<product>Пироженное</product>
+		<product>Зефир в шоколаде</product>
+</category>
+
+<category
+	name = "Полуфабрикаты"
+	image = "semi_finished_goods">
+		<product>Тефтели</product>
+		<product>Котлеты мясные</product>
+		<product>Котлеты рыбные</product>
+		<product>Перец фаршированный</product>
+		<product>Блинчики</product>
+		<product>Блинчики фаршированные</product>
+		<product>Голубцы</product>
+		<product>Пельмени</product>
+		<product>Вареники с картошкой</product>
+		<product>Вареники с творогом</product>
+		<product>Вареники с капустой</product>
+		<product>Хинкали</product>
+		<product>Манты</product>
+		<product>Чебуреки</product>
+		<product>Сырники</product>
+		<product>Фрикадельки</product>
+		<product>Зразы</product>
+		<product>Пицца</product>
+</category>
+
+<category
+	name = "Сухофрукты/орехи"
+	image = "dried_fruits">
+		<product>Курага</product>
+		<product>Арахис</product>
+		<product>Бананы сушеные</product>
+		<product>Бразильский орех</product>
+		<product>Гретский орех</product>
+		<product>Компот смесь</product>
+		<product>Изюм</product>
+		<product>Каштан</product>
+		<product>Кедровые орехи</product>
+		<product>Кешью</product>
+		<product>Инжир сушеный</product>
+		<product>Миндаль</product>
+		<product>Семечки подсолнечника</product>
+		<product>Семечки тыквы</product>
+		<product>Финики</product>
+		<product>Фисташки</product>
+		<product>Фундук</product>
+		<product>Чернослив</product>
+		<product>Пекан орех</product>
+		<product>Цукаты</product>
+		<product>Вишня вяленая</product>
+		<product>Миндаль горький</product>
+		<product>Шиповник сушеный</product>
+</category>
+
+<category
+	name = "Кулинария"
+	image = "cookery">
+		<product>Спаржа салат</product>
+		<product>Морковка по-корейски</product>
+		<product>Капуста по-корейски</product>
+		<product>Папоротник по-корейски</product>
+		<product>Фунчоза по-корейски</product>
+		<product>Хе из рыбы</product>
+		<product>Папоротник по-корейсик</product>
+		<product>Курица-гриль</product>
+</category>
+
+</products>

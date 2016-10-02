@@ -21,6 +21,7 @@ public class DataSource {
     private final String TABLE = DbHelper.TABLE_PRODUCTS;
     private final String PNAME = DbHelper.COLUMN_NAME;
     private final String PCATEG = DbHelper.COLUMN_CATEGORY;
+    private final String PCATEGIMG = DbHelper.COLUMN_CAT_IMAGE;
     private final String ID = DbHelper.COLUMN_ID;
 
 
@@ -51,14 +52,15 @@ public class DataSource {
         Log.d(getClass().getSimpleName(),"query: " + query);
         ArrayList<Product> list = new ArrayList<>();
         Cursor cursor = mDataBase.query(TABLE,
-                null,//Нужны все поля
+                null,//Нужны все поля//TODO переделать нужно явно указывать поля
                 DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%'",
                 null,null,null,null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
             list.add(new Product(cursor.getInt(0),
                     cursor.getString(1),
-                    cursor.getString(2)));
+                    cursor.getString(2),
+                    cursor.getString(3)));
             cursor.moveToNext();
         }
         return list;

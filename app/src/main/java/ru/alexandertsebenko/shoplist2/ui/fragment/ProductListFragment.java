@@ -6,12 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
+import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,10 +67,30 @@ public class ProductListFragment extends Fragment {
         //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
         //продукт то создаём эту категорию и кладём в неё продукт
         if(!productAdded) {
-            mParentItemList.add(new ParentItem(product.getCategory(),
+            mParentItemList.add(new ParentItem(product.getCategory(),product.getImage(),
                     createProductInstance(product)));
         }
         return mParentItemList;
+    }
+
+    private void addProductToAdapter(Product product) {
+        boolean productAdded = false;
+        for(Object pi : mAdapter.getParentItemList()){
+            String categoryName = ((ParentItem) pi).getName();
+            //Если продукты такой категории уже есть в списке
+            if(categoryName.equals(product.getCategory())) {
+                ((ParentItem)pi).addProductInsToList(createProductInstance(product));
+                mAdapter.notifyDataSetChanged();
+                productAdded = true;
+                break;
+            }
+        }
+        //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
+        //продукт то создаём эту категорию и кладём в неё продукт
+/*        if(!productAdded) {
+            mAdapter.getParentItemList().add(new ParentItem(product.getCategory(),
+                    createProductInstance(product)));
+        }*/
     }
     private ProductInstance createProductInstance(Product product){
         return new ProductInstance(1,product,1,"штука");//TODO: хардкод заглушка

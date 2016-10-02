@@ -11,9 +11,11 @@ import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 public class ParentItem implements ParentListItem {
 
     List<ProductInstance> mProductInstanceList;
+    String mName;
     String mDrawableIdName;
 
-    public ParentItem(String drawableIdName, ProductInstance productInstance) {
+    public ParentItem(String name, String drawableIdName, ProductInstance productInstance) {
+        mName = name;
         mDrawableIdName = drawableIdName;
         mProductInstanceList = new ArrayList<>();
         addProductInsToList(productInstance);
@@ -30,6 +32,9 @@ public class ParentItem implements ParentListItem {
     }
 
     public String getName() {
+        return mName;
+    }
+    public String getImageName(){
         return mDrawableIdName;
     }
 
