@@ -9,6 +9,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
@@ -72,26 +73,6 @@ public class ProductListFragment extends Fragment {
         }
         return mParentItemList;
     }
-
-    private void addProductToAdapter(Product product) {
-        boolean productAdded = false;
-        for(Object pi : mAdapter.getParentItemList()){
-            String categoryName = ((ParentItem) pi).getName();
-            //Если продукты такой категории уже есть в списке
-            if(categoryName.equals(product.getCategory())) {
-                ((ParentItem)pi).addProductInsToList(createProductInstance(product));
-                mAdapter.notifyDataSetChanged();
-                productAdded = true;
-                break;
-            }
-        }
-        //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
-        //продукт то создаём эту категорию и кладём в неё продукт
-/*        if(!productAdded) {
-            mAdapter.getParentItemList().add(new ParentItem(product.getCategory(),
-                    createProductInstance(product)));
-        }*/
-    }
     private ProductInstance createProductInstance(Product product){
         return new ProductInstance(1,product,1,"штука");//TODO: хардкод заглушка
         //экземпляр покупки 1 штука
@@ -99,6 +80,9 @@ public class ProductListFragment extends Fragment {
     public void addProduct(Product product) {
         mAdapter = new ShopListAdapter(getContext(),addProductToList(product));
         mRecyclerView.setAdapter(mAdapter);
+    }
+    public void saveList(){
+        Toast.makeText(getContext(),"saveListCalled",Toast.LENGTH_SHORT).show();
     }
     private void setUpItemTouchHelper(){
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(

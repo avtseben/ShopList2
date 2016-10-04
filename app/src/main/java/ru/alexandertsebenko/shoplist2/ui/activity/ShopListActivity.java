@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -25,15 +26,26 @@ import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
 
 public class ShopListActivity extends AppCompatActivity{
 
+    public static final int LIST_PREPARE_STATE = 1;
+    public static final int DO_SHOPPING_STATE = 2;
+
+
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
     private final String LIST_FRAGMENT_TAG = "slft";
+    private FloatingActionButton mFab;
+    private int mState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
+
+        //По умолчанию в режиме составления списка
+        mState = LIST_PREPARE_STATE;
+        setupFab();
+
 
         //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
@@ -42,6 +54,35 @@ public class ShopListActivity extends AppCompatActivity{
         ft.addToBackStack(null);
         ft.commit();
     }
+    private void setupFab() {
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (mState) {
+                    case LIST_PREPARE_STATE:
+                        saveShopList();
+                        goShoping();
+                        break;
+                    case DO_SHOPPING_STATE:
+                        bougthProducts();
+                        break;
+                }
+            }
+        });
+    }
+    private void saveShopList(){
+        ProductListFragment plf = (ProductListFragment) mFragManager.findFragmentByTag(LIST_FRAGMENT_TAG);
+        plf.saveList();
+    }
+    private void goShoping(){
+        mState = DO_SHOPPING_STATE;
+    }
+    private void bougthProducts(){
+        Toast.makeText(this,"Купил",Toast.LENGTH_SHORT).show();
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
