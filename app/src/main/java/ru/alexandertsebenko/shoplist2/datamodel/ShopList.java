@@ -14,7 +14,7 @@ public class ShopList {
     private long dateMilis;
     List<ProductInstance> prodList = new ArrayList<>();
 
-    public ShopList(int id, long date, String name){
+    public ShopList(long id, long date, String name){
         this.id = id;
         this.dateMilis = date;
         this.name = name;

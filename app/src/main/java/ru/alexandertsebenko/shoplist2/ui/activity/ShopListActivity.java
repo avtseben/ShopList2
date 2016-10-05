@@ -22,20 +22,22 @@ import ru.alexandertsebenko.shoplist2.datamodel.Product;
 import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
+import ru.alexandertsebenko.shoplist2.ui.fragment.ProductBasketFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
 
 public class ShopListActivity extends AppCompatActivity{
 
     public static final int LIST_PREPARE_STATE = 1;
     public static final int DO_SHOPPING_STATE = 2;
+    private final String LIST_FRAGMENT_TAG = "slft";
+    private final String BASCKET_FRAGMENT_TAG = "pbft";
+    public static int mState;
 
 
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
-    private final String LIST_FRAGMENT_TAG = "slft";
     private FloatingActionButton mFab;
-    private int mState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class ShopListActivity extends AppCompatActivity{
         //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
         FragmentTransaction ft = mFragManager.beginTransaction();
-        ft.replace(R.id.fl_fragment_container, new ProductListFragment(), LIST_FRAGMENT_TAG);
+        ft.replace(R.id.fl_shoplistfragment_container, new ProductListFragment(), LIST_FRAGMENT_TAG);
+        ft.replace(R.id.fl_bascket_container, new ProductBasketFragment(), BASCKET_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
     }
@@ -77,6 +80,9 @@ public class ShopListActivity extends AppCompatActivity{
     }
     private void goShoping(){
         mState = DO_SHOPPING_STATE;
+        ProductListFragment listF = (ProductListFragment) mFragManager.findFragmentByTag(LIST_FRAGMENT_TAG);
+        ProductBasketFragment basketF = (ProductBasketFragment) mFragManager.findFragmentByTag(BASCKET_FRAGMENT_TAG);
+        listF.setUpItemTouchHelper(DO_SHOPPING_STATE);
     }
     private void bougthProducts(){
         Toast.makeText(this,"Купил",Toast.LENGTH_SHORT).show();

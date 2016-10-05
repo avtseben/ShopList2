@@ -1,5 +1,6 @@
 package ru.alexandertsebenko.shoplist2.ui.fragment;
 
+import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,15 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
-import com.bignerdranch.expandablerecyclerview.Model.ParentWrapper;
-import com.bignerdranch.expandablerecyclerview.ViewHolder.ParentViewHolder;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
+import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
+import ru.alexandertsebenko.shoplist2.db.DataSource;
+import ru.alexandertsebenko.shoplist2.ui.activity.ShopListActivity;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ChildProductViewHolder;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ParentItem;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
@@ -30,17 +30,34 @@ public class ProductListFragment extends Fragment {
     RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
     ShopListAdapter mAdapter;
+    ShopList mShopList;
+    DataSource mDataSource;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        System.out.println(container.getClass().getSimpleName());
         View view = inflater.inflate(R.layout.fragment_product_list,container, false);
 
+        mDataSource = new DataSource(getContext());
+        mDataSource.open();
         setUpRecyclerView(view);
-        setUpItemTouchHelper();
+        setUpItemTouchHelper(ShopListActivity.LIST_PREPARE_STATE);
+
+        if(true){//TODO если в Интенте нет имеющегося списка
+            createNewShopList();
+        }
+        mShopList = new ShopList(-1,1,"new List");
         return view;
+    }
+    private void createNewShopList(){
+        long date = System.currentTimeMillis();
+        String listName = "newList";
+        long id = mDataSource.addNewShopList(listName,date);
+        mShopList = new ShopList(id,date,listName);
     }
     private void setUpRecyclerView(View view){
         mParentItemList = new ArrayList<ParentItem>();
@@ -74,7 +91,15 @@ public class ProductListFragment extends Fragment {
         return mParentItemList;
     }
     private ProductInstance createProductInstance(Product product){
-        return new ProductInstance(1,product,1,"штука");//TODO: хардкод заглушка
+        int quantity = 1;
+        String measure = "штука";
+        int state = ProductInstance.IN_LIST;
+        long id = mDataSource.addProductInstance(
+                mShopList.getId(),
+                product.getId(),
+                quantity,measure,state);
+
+        return new ProductInstance(id,product,quantity,measure,state);//TODO: хардкод заглушка
         //экземпляр покупки 1 штука
     }
     public void addProduct(Product product) {
@@ -83,10 +108,12 @@ public class ProductListFragment extends Fragment {
     }
     public void saveList(){
         Toast.makeText(getContext(),"saveListCalled",Toast.LENGTH_SHORT).show();
+
     }
-    private void setUpItemTouchHelper(){
+    public void setUpItemTouchHelper(final int state){
+
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback = new ItemTouchHelper.SimpleCallback(
-                0/*drag drop не нужен*/, ItemTouchHelper.LEFT
+                0/*drag drop не нужен*/, ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT
                 /*задаём направление свайпа которое слушаем*/) {
 
                     @Override
@@ -108,12 +135,35 @@ public class ProductListFragment extends Fragment {
                     public void onSwiped (RecyclerView.ViewHolder viewHolder, int direction) {
                         if(viewHolder.getClass().equals(ChildProductViewHolder.class)) {
                             int position = viewHolder.getAdapterPosition();
-                            mAdapter.deleteProductInstance(position);
+                            ProductInstance pi = ((ProductInstance)mAdapter.getListItem(position));
+                            if(direction == ItemTouchHelper.RIGHT &&
+                                    state == ShopListActivity.DO_SHOPPING_STATE) {
+                                mAdapter.deleteProductInstance(position);
+                                //TODO сдесь нужно класть в адаптер корзины
+                                pi.setState(ProductInstance.IN_BASKET);
+                                mDataSource.updateProductInstanceState(pi.getId(),
+                                        ProductInstance.IN_BASKET);
+                            } else if(direction == ItemTouchHelper.LEFT) {
+                                mAdapter.deleteProductInstance(position);
+                                pi.setState(ProductInstance.DELETED);//TODO возможно state DELETED не нужен - просто удалять
+                                mDataSource.deleteProductInstanceById(pi.getId());
+                            }
                         }
                     }
                 };
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
+/*    private class SaveListTask extends AsyncTask<>{
+
+        List<ProductInstance> productInstances;
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            return null;
+        }
+
+        List, Void, Boolean} {
+
+    }*/
 }
 

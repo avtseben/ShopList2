@@ -29,9 +29,10 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_QUANTITY = "quantity";
     public static final String COLUMN_MEASURE_ID = "measure_id";
     public static final String COLUMN_CAT_IMAGE = "category_image";
+    public static final String COLUMN_STATE = "product_state";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     //TODO рефакторить БД вынести категории в отдельную таблицу
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -51,6 +52,7 @@ public class DbHelper extends SQLiteOpenHelper{
             + " integer, " + COLUMN_PRODUCT_ID
             + " integer, " + COLUMN_QUANTITY
             + " integer, " + COLUMN_MEASURE_ID
+            + " integer, " + COLUMN_STATE
             + " integer);";
 
 

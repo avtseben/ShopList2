@@ -7,16 +7,22 @@ package ru.alexandertsebenko.shoplist2.datamodel;
  */
 public class ProductInstance {
 
+    public static final int DELETED = 0;
+    public static final int IN_LIST = 1;
+    public static final int IN_BASKET = 2;
+    public static final int BOUGHT = 3;
     private long id;
     private Product product;
     private float quantity;
     private String measure;
+    private int state;
 
-    public ProductInstance(long id, Product product, float quantity, String measure) {
+    public ProductInstance(long id, Product product, float quantity, String measure, int state) {
         this.id = id;
         this.product = product;
         this.quantity = quantity;
         this.measure = measure;
+        this.state = state;
     }
 
     public long getId() {
@@ -25,6 +31,14 @@ public class ProductInstance {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     public Product getProduct() {
