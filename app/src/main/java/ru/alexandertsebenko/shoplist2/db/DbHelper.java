@@ -44,7 +44,7 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String SHOPLIST_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SHOP_LISTS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_DATE
-            + " text, " + COLUMN_NAME
+            + " integer, " + COLUMN_NAME
             + " text);";
     private static final String PRODUCT_INSTANCES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PRODUCT_INSTANCES + "(" + COLUMN_ID

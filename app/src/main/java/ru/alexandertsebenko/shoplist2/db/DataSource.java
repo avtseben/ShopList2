@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 
 public class DataSource {
 
@@ -97,5 +98,26 @@ public class DataSource {
     public void deleteProductInstanceById(long id) {
         mDataBase.delete(DbHelper.TABLE_PRODUCT_INSTANCES,
                 DbHelper.COLUMN_ID + " = " + id, null);
+    }
+
+    public List<ShopList> getAllLists() {
+        List<ShopList> list = new ArrayList<>();
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_SHOP_LISTS,
+                new String[]{DbHelper.COLUMN_ID,DbHelper.COLUMN_NAME,DbHelper.COLUMN_DATE},
+                null,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            list.add(new ShopList(
+                    cursor.getLong(0),
+                    cursor.getLong(1),
+                    cursor.getString(2)));
+            cursor.moveToNext();
+        }
+        return list;
+    }
+
+    public void deleteShopListById(long id) {
+        mDataBase.delete(DbHelper.TABLE_SHOP_LISTS,
+                DbHelper.COLUMN_ID + " = " + id,null);
     }
 }

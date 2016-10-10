@@ -1,12 +1,14 @@
 package ru.alexandertsebenko.shoplist2.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductBasketFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
+import ru.alexandertsebenko.shoplist2.ui.fragment.TopFragment;
 
 public class ShopListActivity extends AppCompatActivity{
 
@@ -33,7 +36,7 @@ public class ShopListActivity extends AppCompatActivity{
     private final String BASCKET_FRAGMENT_TAG = "pbft";
     public static int mState;
 
-
+    private ShopList mShopListObj;
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
@@ -44,11 +47,6 @@ public class ShopListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
 
-        //По умолчанию в режиме составления списка
-        mState = LIST_PREPARE_STATE;
-        setupFab();
-
-
         //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
         FragmentTransaction ft = mFragManager.beginTransaction();
@@ -56,6 +54,17 @@ public class ShopListActivity extends AppCompatActivity{
         ft.replace(R.id.fl_bascket_container, new ProductBasketFragment(), BASCKET_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
+
+        Intent inIntent = getIntent();
+        mShopListObj = (ShopList) inIntent.getParcelableExtra(ShopList.class.getCanonicalName());
+        if(mShopListObj != null) {
+            mState = DO_SHOPPING_STATE;
+            Toast.makeText(this,"List exist " + mShopListObj.getName(),Toast.LENGTH_SHORT).show();
+        } else {
+            //По умолчанию в режиме составления списка
+            mState = LIST_PREPARE_STATE;
+        }
+        setupFab();
     }
     private void setupFab() {
         mFab = (FloatingActionButton) findViewById(R.id.fab);

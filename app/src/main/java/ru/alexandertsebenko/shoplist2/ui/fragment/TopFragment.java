@@ -1,32 +1,25 @@
 package ru.alexandertsebenko.shoplist2.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
-import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.db.DataSource;
 import ru.alexandertsebenko.shoplist2.ui.activity.ShopListActivity;
-import ru.alexandertsebenko.shoplist2.ui.adapter.ChildProductViewHolder;
 import ru.alexandertsebenko.shoplist2.ui.adapter.TopListAdapter;
 
-/**
- * Created by avtseben on 06.10.2016.
- */
 public class TopFragment extends Fragment {
 
     private DataSource mDataSource;
@@ -60,13 +53,12 @@ public class TopFragment extends Fragment {
             public void onItemClick(View itemView, int position) {
                 ShopList sl = mTopList.get(position);
                 Toast.makeText(itemView.getContext(), "Click on " + sl.getName(), Toast.LENGTH_SHORT).show();
+                Intent intentToShopList = new Intent(getContext(),ShopListActivity.class);
+                intentToShopList.putExtra(ShopList.class.getCanonicalName(), sl);
+                startActivity(intentToShopList);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
-
-
-/*        SnapHelper snapHelper = new LinearSnapHelper();
-        snapHelper.attachToRecyclerView(mRecyclerView);*/
     }
     public void setUpItemTouchHelper(){
 

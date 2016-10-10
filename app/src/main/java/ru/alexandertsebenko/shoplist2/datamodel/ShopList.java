@@ -1,5 +1,8 @@
 package ru.alexandertsebenko.shoplist2.datamodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ import java.util.List;
  * Класс определяющий список, "поход в пятицу", "для нового года"
  * это набор продуктов и дату составления списка
  */
-public class ShopList {
+public class ShopList implements Parcelable{
 
     private long id;
     private String name;
@@ -45,5 +48,33 @@ public class ShopList {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(id);
+        parcel.writeLong(dateMilis);
+        parcel.writeString(name);
+    }
+    public static final Parcelable.Creator<ShopList> CREATOR = new Parcelable.Creator<ShopList>() {
+        // распаковываем объект из Parcel
+        public ShopList createFromParcel(Parcel in) {
+            return new ShopList(in);
+        }
+        public ShopList[] newArray(int size) {
+            return new ShopList[size];
+        }
+    };
+
+    // конструктор, считывающий данные из Parcel
+    private ShopList(Parcel parcel) {
+        id = parcel.readLong();
+        dateMilis = parcel.readLong();
+        name = parcel.readString();
     }
 }
