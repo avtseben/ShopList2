@@ -86,7 +86,7 @@ public class TopFragment extends Fragment {
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
     private void deleteItemFromPosition(int position){
-        mDataSource.deleteShopListById(mTopList.get(position).getId());
+        mDataSource.deleteShopListById(mTopList.get(position).getId());//TODO удалять не только сам список но и экземпляры покупок привязанные к этому списку
         mTopList.remove(position);
         mAdapter.notifyItemRemoved(position);
     }

@@ -27,30 +27,42 @@ import ru.alexandertsebenko.shoplist2.ui.adapter.ShopListAdapter;
 
 public class ProductListFragment extends Fragment {
 
+    private static final String SHOP_LIST_POJO = "slpojo";
     RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
     ShopListAdapter mAdapter;
     ShopList mShopList;
     DataSource mDataSource;
 
-
+    public static ProductListFragment newInstance(ShopList ShopListPOJO) {
+        ProductListFragment plf = new ProductListFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(SHOP_LIST_POJO, ShopListPOJO);
+        plf.setArguments(args);
+        return plf;
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mDataSource = new DataSource(getContext());
+        mDataSource.open();
+        mParentItemList = new ArrayList<>();
+        //Есть ли в аргументах готовый списко продуктов ил составляем новый
+        ShopList ShopListPojo = getArguments().getParcelable(SHOP_LIST_POJO);
+        if(ShopListPojo != null){
+            restoreListFromDb(ShopListPojo);
+        } else {
+        createNewShopList();//TODO создавать список только если добавили продукт. И удалять списко если в нём не осталось продуктов (все удалили)
+        }
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        System.out.println(container.getClass().getSimpleName());
         View view = inflater.inflate(R.layout.fragment_product_list,container, false);
 
-        mDataSource = new DataSource(getContext());
-        mDataSource.open();
         setUpRecyclerView(view);
         setUpItemTouchHelper(ShopListActivity.LIST_PREPARE_STATE);
-
-        if(true){//TODO если в Интенте нет имеющегося списка
-            createNewShopList();
-        }
-        mShopList = new ShopList(-1,1,"new List");
         return view;
     }
     private void createNewShopList(){
@@ -60,7 +72,6 @@ public class ProductListFragment extends Fragment {
         mShopList = new ShopList(id,date,listName);
     }
     private void setUpRecyclerView(View view){
-        mParentItemList = new ArrayList<ParentItem>();
         mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_product_list);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mAdapter = new ShopListAdapter(getContext(),mParentItemList);
@@ -69,6 +80,33 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
+    }
+    private void restoreListFromDb(ShopList ShopListPOJO) {
+        mShopList = ShopListPOJO;
+        List<ProductInstance> pil = mDataSource.getProductInstancesByShopListId(mShopList.getId());
+        for(ProductInstance pinst : pil) {
+            Product product = pinst.getProduct();
+
+            boolean productAdded = false;
+//            if(mParentItemList != null){
+                for (ParentItem pi : mParentItemList) {
+                    //Если продукты такой категории уже есть в списке
+                    if (pi.getName().equals(product.getCategory())) {
+                        pi.addProductInsToList(pinst);
+                        productAdded = true;
+                        break;
+                    }
+                }
+//            }
+            //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
+            //продукт то создаём эту категорию и кладём в неё продукт
+            if (!productAdded) {
+                mParentItemList.add(new ParentItem(product.getCategory(), product.getImage(),
+                        pinst));
+            }
+        }
+/*        mAdapter = new ShopListAdapter(getContext(),mParentItemList);
+        mRecyclerView.setAdapter(mAdapter);*/
     }
     //Формируем списко для адаптера
     //TODO:сохранять список при изменении ориентации
@@ -154,16 +192,6 @@ public class ProductListFragment extends Fragment {
         ItemTouchHelper mItemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
         mItemTouchHelper.attachToRecyclerView(mRecyclerView);
     }
-/*    private class SaveListTask extends AsyncTask<>{
 
-        List<ProductInstance> productInstances;
-        @Override
-        protected Object doInBackground(Object[] objects) {
-            return null;
-        }
-
-        List, Void, Boolean} {
-
-    }*/
 }
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 
 public class DataSource {
@@ -52,7 +53,6 @@ public class DataSource {
                 null,null,null,null,null);
     }
     public List<Product> getProductByNameMatches(String query) {
-        Log.d(getClass().getSimpleName(),"query: " + query);
         ArrayList<Product> list = new ArrayList<>();
         Cursor cursor = mDataBase.query(TABLE,
                 null,//Нужны все поля//TODO переделать нужно явно указывать поля
@@ -67,6 +67,24 @@ public class DataSource {
             cursor.moveToNext();
         }
         return list;
+    }
+    public Product getProductById (long id) {
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_PRODUCTS,
+                new String[]{DbHelper.COLUMN_ID,
+                    DbHelper.COLUMN_CATEGORY,
+                    DbHelper.COLUMN_NAME,
+                    DbHelper.COLUMN_CAT_IMAGE},
+                DbHelper.COLUMN_ID + " = " + id,
+                null,null,null,null);
+            cursor.moveToFirst();
+                long a = cursor.getLong(0);
+                String b = cursor.getString(1);
+                String c = cursor.getString(2);
+                String d = cursor.getString(3);
+        return new Product(cursor.getInt(0),
+                cursor.getString(1),
+                cursor.getString(2),
+                cursor.getString(3));
     }
     //TODO переделать всё на AsyncTask
     public long addNewShopList(String listName,long date){
@@ -119,5 +137,29 @@ public class DataSource {
     public void deleteShopListById(long id) {
         mDataBase.delete(DbHelper.TABLE_SHOP_LISTS,
                 DbHelper.COLUMN_ID + " = " + id,null);
+    }
+
+    public List<ProductInstance> getProductInstancesByShopListId(long id) {
+        ArrayList<ProductInstance> list = new ArrayList<>();
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_PRODUCT_INSTANCES,
+                new String[]{DbHelper.COLUMN_ID,
+                        DbHelper.COLUMN_PRODUCT_ID,
+                        DbHelper.COLUMN_QUANTITY,
+                        DbHelper.COLUMN_MEASURE_ID,
+                        DbHelper.COLUMN_STATE},
+                DbHelper.COLUMN_SHOPLIST_ID+ " = " + id,
+                null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            list.add(new ProductInstance(
+                    cursor.getLong(0),
+                    getProductById(cursor.getLong(1)),
+                    cursor.getFloat(2),
+                    cursor.getString(3),
+                    cursor.getInt(4)));
+            cursor.moveToNext();
+        }
+        return list;
+
     }
 }

@@ -2,13 +2,10 @@ package ru.alexandertsebenko.shoplist2.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -21,12 +18,10 @@ import android.widget.Toast;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
-import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductBasketFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
-import ru.alexandertsebenko.shoplist2.ui.fragment.TopFragment;
 
 public class ShopListActivity extends AppCompatActivity{
 
@@ -41,6 +36,8 @@ public class ShopListActivity extends AppCompatActivity{
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
     private FloatingActionButton mFab;
+    private ProductListFragment mProdFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +47,27 @@ public class ShopListActivity extends AppCompatActivity{
         //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
         FragmentTransaction ft = mFragManager.beginTransaction();
-        ft.replace(R.id.fl_shoplistfragment_container, new ProductListFragment(), LIST_FRAGMENT_TAG);
+
+        Intent inIntent = getIntent();
+        mShopListObj = inIntent.getParcelableExtra(ShopList.class.getCanonicalName());
+        //Если в Интенте есть список то открываем его и переходим в режим "В магазине"
+        if(mShopListObj != null) {
+            mState = DO_SHOPPING_STATE;
+            mProdFragment = ProductListFragment.newInstance(mShopListObj);
+        } else {
+            //По умолчанию в режиме составления списка
+            mProdFragment = ProductListFragment.newInstance(null);
+            mState = LIST_PREPARE_STATE;
+        }
+        ft.replace(R.id.fl_shoplistfragment_container, mProdFragment, LIST_FRAGMENT_TAG);
         ft.replace(R.id.fl_bascket_container, new ProductBasketFragment(), BASCKET_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
 
-        Intent inIntent = getIntent();
-        mShopListObj = (ShopList) inIntent.getParcelableExtra(ShopList.class.getCanonicalName());
-        if(mShopListObj != null) {
-            mState = DO_SHOPPING_STATE;
-            Toast.makeText(this,"List exist " + mShopListObj.getName(),Toast.LENGTH_SHORT).show();
-        } else {
-            //По умолчанию в режиме составления списка
-            mState = LIST_PREPARE_STATE;
-        }
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
         setupFab();
     }
     private void setupFab() {
