@@ -11,6 +11,7 @@ import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
+import ru.alexandertsebenko.shoplist2.utils.DateBuilder;
 
 public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListViewHolder> {
 
@@ -40,6 +41,9 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
         holder.name.setText(mResults.get(position).getName());
+        holder.date.setText(DateBuilder.timeTitleBuilder(mResults
+                .get(position)
+                .getDateMilis()));
     }
 
     @Override
@@ -55,10 +59,12 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
     public class ListViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
+        TextView date;
 
         public ListViewHolder(View itemView) {
             super(itemView);
             name = ((TextView) itemView.findViewById(R.id.tv_list_name));
+            date = ((TextView) itemView.findViewById(R.id.tv_list_date));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

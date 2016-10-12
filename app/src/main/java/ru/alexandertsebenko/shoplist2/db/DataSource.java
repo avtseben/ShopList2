@@ -76,11 +76,7 @@ public class DataSource {
                     DbHelper.COLUMN_CAT_IMAGE},
                 DbHelper.COLUMN_ID + " = " + id,
                 null,null,null,null);
-            cursor.moveToFirst();
-                long a = cursor.getLong(0);
-                String b = cursor.getString(1);
-                String c = cursor.getString(2);
-                String d = cursor.getString(3);
+        cursor.moveToFirst();
         return new Product(cursor.getInt(0),
                 cursor.getString(1),
                 cursor.getString(2),
@@ -121,7 +117,7 @@ public class DataSource {
     public List<ShopList> getAllLists() {
         List<ShopList> list = new ArrayList<>();
         Cursor cursor = mDataBase.query(DbHelper.TABLE_SHOP_LISTS,
-                new String[]{DbHelper.COLUMN_ID,DbHelper.COLUMN_NAME,DbHelper.COLUMN_DATE},
+                new String[]{DbHelper.COLUMN_ID,DbHelper.COLUMN_DATE,DbHelper.COLUMN_NAME},
                 null,null,null,null,null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){

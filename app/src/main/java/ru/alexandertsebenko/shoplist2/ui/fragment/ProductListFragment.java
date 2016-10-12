@@ -67,7 +67,7 @@ public class ProductListFragment extends Fragment {
     }
     private void createNewShopList(){
         long date = System.currentTimeMillis();
-        String listName = "newList";
+        String listName = getResources().getString(R.string.defaultListName);
         long id = mDataSource.addNewShopList(listName,date);
         mShopList = new ShopList(id,date,listName);
     }
@@ -81,41 +81,26 @@ public class ProductListFragment extends Fragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
     }
-    private void restoreListFromDb(ShopList ShopListPOJO) {
-        mShopList = ShopListPOJO;
+    private void restoreListFromDb(ShopList ShopListPojo) {
+        mShopList = ShopListPojo;
         List<ProductInstance> pil = mDataSource.getProductInstancesByShopListId(mShopList.getId());
         for(ProductInstance pinst : pil) {
-            Product product = pinst.getProduct();
-
-            boolean productAdded = false;
-//            if(mParentItemList != null){
-                for (ParentItem pi : mParentItemList) {
-                    //Если продукты такой категории уже есть в списке
-                    if (pi.getName().equals(product.getCategory())) {
-                        pi.addProductInsToList(pinst);
-                        productAdded = true;
-                        break;
-                    }
-                }
-//            }
-            //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
-            //продукт то создаём эту категорию и кладём в неё продукт
-            if (!productAdded) {
-                mParentItemList.add(new ParentItem(product.getCategory(), product.getImage(),
-                        pinst));
-            }
+            smartAdd(pinst);
         }
-/*        mAdapter = new ShopListAdapter(getContext(),mParentItemList);
-        mRecyclerView.setAdapter(mAdapter);*/
     }
     //Формируем списко для адаптера
     //TODO:сохранять список при изменении ориентации
-    private List<ParentItem> addProductToList(Product product) {
+    private void addProductToList(Product product) {
+        smartAdd(createProductInstance(product));
+    }
+    private void smartAdd(ProductInstance pinst){
+        String category = pinst.getProduct().getCategory();
+        String imageName = pinst.getProduct().getImage();
         boolean productAdded = false;
         for(ParentItem pi : mParentItemList){
             //Если продукты такой категории уже есть в списке
-            if(pi.getName().equals(product.getCategory())) {
-                pi.addProductInsToList(createProductInstance(product));
+            if(pi.getName().equals(category)) {
+                pi.addChild(pinst);
                 productAdded = true;
                 break;
             }
@@ -123,10 +108,8 @@ public class ProductListFragment extends Fragment {
         //Если в предыдущем цыкле не нашлось в списке катаегории куда "положить"
         //продукт то создаём эту категорию и кладём в неё продукт
         if(!productAdded) {
-            mParentItemList.add(new ParentItem(product.getCategory(),product.getImage(),
-                    createProductInstance(product)));
+            mParentItemList.add(new ParentItem(category,imageName,pinst));
         }
-        return mParentItemList;
     }
     private ProductInstance createProductInstance(Product product){
         int quantity = 1;
@@ -141,7 +124,8 @@ public class ProductListFragment extends Fragment {
         //экземпляр покупки 1 штука
     }
     public void addProduct(Product product) {
-        mAdapter = new ShopListAdapter(getContext(),addProductToList(product));
+        addProductToList(product);
+        mAdapter = new ShopListAdapter(getContext(),mParentItemList);
         mRecyclerView.setAdapter(mAdapter);
     }
     public void saveList(){

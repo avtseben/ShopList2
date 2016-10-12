@@ -18,13 +18,13 @@ public class ParentItem implements ParentListItem {
         mName = name;
         mDrawableIdName = drawableIdName;
         mProductInstanceList = new ArrayList<>();
-        addProductInsToList(productInstance);
+        addChild(productInstance);
     }
 /*    public ParentItem(List productList) {
         mProductList = productList;
     }*/
 
-    public void addProductInsToList (ProductInstance productInstance) {
+    public void addChild(ProductInstance productInstance) {
         mProductInstanceList.add(productInstance);
     }
     public void removeChildFromParent(ProductInstance productInstance){

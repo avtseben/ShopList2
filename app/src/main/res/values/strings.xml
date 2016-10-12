@@ -15,7 +15,11 @@
     <string name="search_button">"Search"</string>
     <string name="menu_settings">Settings</string>
     <string name="hello_world">Hello World!</string>
-
+    <string name="hour_ago">" час. назад"</string>
+    <string name="minutes_ago">" мин. назад"</string>
+    <string name="seconds_ago">" сек. назад"</string>
+    <string name="note_made_in_future_humor">привет от Марти Макфлая</string>
     <string name="findContact">find person&#8230;</string>
+    <string name="defaultListName">Список</string>
 
 </resources>
