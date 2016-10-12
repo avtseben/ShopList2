@@ -39,7 +39,7 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
 
-        holder.textView.setText(mResults.get(position).getName());
+        holder.name.setText(mResults.get(position).getName());
     }
 
     @Override
@@ -54,11 +54,11 @@ public class TopListAdapter extends RecyclerView.Adapter<TopListAdapter.ListView
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView;
+        TextView name;
 
         public ListViewHolder(View itemView) {
             super(itemView);
-            textView = ((TextView) itemView.findViewById(R.id.tv_list_name));
+            name = ((TextView) itemView.findViewById(R.id.tv_list_name));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
