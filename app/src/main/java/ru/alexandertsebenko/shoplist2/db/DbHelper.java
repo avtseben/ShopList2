@@ -30,9 +30,13 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_MEASURE_ID = "measure_id";
     public static final String COLUMN_CAT_IMAGE = "category_image";
     public static final String COLUMN_STATE = "product_state";
+    private static final String TABLE_PI_UPDATES = "product_intstances_updates_states";
+    private static final String COLUMN_PI_ID = "prodinst_id";
+    private static final String COLUMN_PEOPLE_NUMBER = "people_number";
+    private static final String COLUMN_UPDATE = "updated_state";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     //TODO рефакторить БД вынести категории в отдельную таблицу
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -54,8 +58,13 @@ public class DbHelper extends SQLiteOpenHelper{
             + " integer, " + COLUMN_MEASURE_ID
             + " integer, " + COLUMN_STATE
             + " integer);";
-
-
+    private static final String PI_UPDATES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PI_UPDATES + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_PI_ID
+            + " integer, " + COLUMN_PEOPLE_NUMBER
+            + " text, " + COLUMN_UPDATE
+            + " text, " + COLUMN_DATE
+            + " integer);";
 
     public DbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -67,6 +76,7 @@ public class DbHelper extends SQLiteOpenHelper{
         database.execSQL(PRODUCT_TABLE_CREATE);
         database.execSQL(PRODUCT_INSTANCES_TABLE_CREATE);
         database.execSQL(SHOPLIST_TABLE_CREATE);
+        database.execSQL(PI_UPDATES_TABLE_CREATE);
 
         //Load data
         ArrayList<String> inserts = makeArrayOfInserts();
@@ -81,6 +91,7 @@ public class DbHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_INSTANCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP_LISTS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PI_UPDATES);
         onCreate(db);
     }
     private String makeSQLInsert(String category, String name, String image) {
@@ -111,24 +122,6 @@ public class DbHelper extends SQLiteOpenHelper{
         } catch (Exception e) {
             e.printStackTrace();
         }
-/*        inserts.add(makeSQLInsert("bread","хлеб"));
-        inserts.add(makeSQLInsert("bread","булка"));
-        inserts.add(makeSQLInsert("canned_goods","сайра"));
-        inserts.add(makeSQLInsert("chick","курица"));
-        inserts.add(makeSQLInsert("coffee","кофе"));
-        inserts.add(makeSQLInsert("fish","минтай"));
-        inserts.add(makeSQLInsert("fruit","апельсины"));
-        inserts.add(makeSQLInsert("groats","лапша"));
-        inserts.add(makeSQLInsert("household_chemicals","пемоксоль"));
-        inserts.add(makeSQLInsert("hygiene","зубная паста"));
-        inserts.add(makeSQLInsert("meat","говядина"));
-        inserts.add(makeSQLInsert("milk","молоко"));
-        inserts.add(makeSQLInsert("pet","корм adult СС"));
-        inserts.add(makeSQLInsert("sauce","майонез"));
-        inserts.add(makeSQLInsert("seasoning","прованские травы"));
-        inserts.add(makeSQLInsert("sweets","шоколад"));
-        inserts.add(makeSQLInsert("vegetables","помидоры"));
-        inserts.add(makeSQLInsert("vegetables","очень длинное название продукта, такое что нигде не влезет"));*/
         return inserts;
     }
 }
