@@ -34,6 +34,7 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String COLUMN_PI_ID = "prodinst_id";
     private static final String COLUMN_PEOPLE_NUMBER = "people_number";
     private static final String COLUMN_UPDATE = "updated_state";
+    private static final String COLUMN_GLOBAL_UUID = "global_uuid";
 
     private static final String DATABASE_NAME = "shoplist.db";
     private static final int DATABASE_VERSION = 9;
@@ -57,7 +58,8 @@ public class DbHelper extends SQLiteOpenHelper{
             + " integer, " + COLUMN_QUANTITY
             + " integer, " + COLUMN_MEASURE_ID
             + " integer, " + COLUMN_STATE
-            + " integer);";
+            + " integer, " + COLUMN_GLOBAL_UUID
+            + " text);";
     private static final String PI_UPDATES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PI_UPDATES + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_PI_ID

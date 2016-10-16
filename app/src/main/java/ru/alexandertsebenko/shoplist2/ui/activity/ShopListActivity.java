@@ -14,21 +14,23 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.Toast;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
-import ru.alexandertsebenko.shoplist2.ui.fragment.ProductBasketFragment;
+import ru.alexandertsebenko.shoplist2.ui.fragment.SendFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
 
-public class ShopListActivity extends AppCompatActivity{
+public class ShopListActivity extends AppCompatActivity implements
+        ProductListFragment.OnSendButtonClickListener{
 
     public static final int LIST_PREPARE_STATE = 1;
     public static final int DO_SHOPPING_STATE = 2;
     private final String LIST_FRAGMENT_TAG = "slft";
-    private final String BASCKET_FRAGMENT_TAG = "pbft";
+    private final String SEND_FRAGMENT_TAG = "sndft";
     public static int mState;
 
     private ShopList mShopListObj;
@@ -60,7 +62,6 @@ public class ShopListActivity extends AppCompatActivity{
             mState = LIST_PREPARE_STATE;
         }
         ft.replace(R.id.fl_shoplistfragment_container, mProdFragment, LIST_FRAGMENT_TAG);
-        ft.replace(R.id.fl_bascket_container, new ProductBasketFragment(), BASCKET_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
 
@@ -93,9 +94,6 @@ public class ShopListActivity extends AppCompatActivity{
     }
     private void goShoping(){
         mState = DO_SHOPPING_STATE;
-        ProductListFragment listF = (ProductListFragment) mFragManager.findFragmentByTag(LIST_FRAGMENT_TAG);
-        ProductBasketFragment basketF = (ProductBasketFragment) mFragManager.findFragmentByTag(BASCKET_FRAGMENT_TAG);
-        listF.setUpItemTouchHelper(DO_SHOPPING_STATE);
     }
     private void bougthProducts(){
         Toast.makeText(this,"Купил",Toast.LENGTH_SHORT).show();
@@ -145,5 +143,15 @@ public class ShopListActivity extends AppCompatActivity{
         plf.addProduct(product);
     }
 
-
+    /**В фрагменте списка нажали кнопку отправить список
+     * переходим к фрагменту формирования списка людей кому отправлять
+     * список
+     */
+    @Override
+    public void onSendButtonClicked() {
+        FragmentTransaction ft = mFragManager.beginTransaction();
+        ft.replace(R.id.fl_shoplistfragment_container, new SendFragment(), SEND_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
 }
