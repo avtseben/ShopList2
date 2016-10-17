@@ -1,7 +1,6 @@
 package ru.alexandertsebenko.shoplist2.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import ru.alexandertsebenko.shoplist2.R;
@@ -40,8 +38,6 @@ public class ShopListActivity extends AppCompatActivity implements
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
-    private FloatingActionButton mFab;
-    private FragmentTransaction mFTransaction;
 
 
     @Override
@@ -51,63 +47,15 @@ public class ShopListActivity extends AppCompatActivity implements
 
         //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
-        mFTransaction = mFragManager.beginTransaction();
-        mFTransaction.replace(R.id.fl_shoplistfragment_container, new TopFragment(), TOP_FRAGMENT_TAG);
-        mFTransaction.addToBackStack(null);
-        mFTransaction.commit();
-
-/*
-        Intent inIntent = getIntent();
-        mShopListObj = inIntent.getParcelableExtra(ShopList.class.getCanonicalName());
-        //Если в Интенте есть список то открываем его и переходим в режим "В магазине"
-        if(mShopListObj != null) {
-            TE;
-            mProdFragment = ProductListFragment.newInstance(mShopListObj);
-        } else {
-            //По умолчанию в режиме составления списка
-            mProdFragment = ProductListFragment.newInstance(null);
-            mState = LIST_PREPARE_STATE;
-        }
-        ft.replace(R.id.fl_shoplistfragment_container, mProdFragment, LIST_FRAGMENT_TAG);
+        FragmentTransaction ft = mFragManager.beginTransaction();
+        ft.replace(R.id.fl_shoplistfragment_container, new TopFragment(), TOP_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
-*/
-
     }
     @Override
     protected void onStart() {
         super.onStart();
-        setupFab();
     }
-    private void setupFab() {
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mState) {
-                    case LIST_PREPARE_STATE:
-                        saveShopList();
-                        goShoping();
-                        break;
-                    case DO_SHOPPING_STATE:
-                        bougthProducts();
-                        break;
-                }
-            }
-        });
-    }
-    private void saveShopList(){
-        ProductListFragment plf = (ProductListFragment) mFragManager.findFragmentByTag(LIST_FRAGMENT_TAG);
-        plf.saveList();
-    }
-    private void goShoping(){
-        mState = DO_SHOPPING_STATE;
-    }
-    private void bougthProducts(){
-        Toast.makeText(this,"Купил",Toast.LENGTH_SHORT).show();
-    }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

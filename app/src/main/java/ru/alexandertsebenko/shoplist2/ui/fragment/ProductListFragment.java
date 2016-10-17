@@ -3,6 +3,7 @@ package ru.alexandertsebenko.shoplist2.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -31,12 +32,17 @@ import ru.alexandertsebenko.shoplist2.ui.adapter.ShopListAdapter;
 
 public class ProductListFragment extends Fragment {
 
+
+
+    public static final int LIST_PREPARE_STATE = 1;
+    public static final int DO_SHOPPING_STATE = 2;
     private static final String SHOP_LIST_POJO = "slpojo";
     RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
     ShopListAdapter mAdapter;
     ShopList mShopList;
     DataSource mDataSource;
+    public static int mState;
 
     public static ProductListFragment newInstance(ShopList ShopListPOJO) {
         ProductListFragment plf = new ProductListFragment();
@@ -68,6 +74,7 @@ public class ProductListFragment extends Fragment {
         setUpRecyclerView(view);
         setUpItemTouchHelper(ShopListActivity.LIST_PREPARE_STATE);
         setupSendButton(view);
+        setupFab(view);
         return view;
     }
     private void createNewShopList(){
@@ -207,6 +214,28 @@ public class ProductListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.listener = (OnSendButtonClickListener) context;
+    }
+    private void setupFab(View view) {
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (mState) {
+                    case LIST_PREPARE_STATE:
+                        goShoping();
+                        break;
+                    case DO_SHOPPING_STATE:
+                        bougthProducts();
+                        break;
+                }
+            }
+        });
+    }
+    private void goShoping(){
+        mState = DO_SHOPPING_STATE;
+    }
+    private void bougthProducts(){
+        Toast.makeText(getContext(),"Купил",Toast.LENGTH_SHORT).show();
     }
 }
 
