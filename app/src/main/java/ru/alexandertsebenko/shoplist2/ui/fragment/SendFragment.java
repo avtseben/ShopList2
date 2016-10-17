@@ -11,6 +11,7 @@ import android.support.v4.widget.SimpleCursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -32,6 +33,8 @@ public class SendFragment extends Fragment {
 
     private ListView mPeoplesListView;
     private ContactsAdapter mAdapter;
+    private boolean mHasSelected;
+    private Button mSendButton;
 
     public SendFragment() {}
 
@@ -41,13 +44,21 @@ public class SendFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_send,container, false);
+        mSendButton = (Button) view.findViewById(R.id.send_button2);
         mPeoplesListView = (ListView) view.findViewById(R.id.contact_list);
         mPeoples = readContacts();
         mAdapter = new ContactsAdapter(mPeoples,view.getContext());
         mAdapter.setListener(new ContactsAdapter.OnContactClickListener() {
             @Override
             public void onContactClicked(People peopleObj) {
-                Toast.makeText(getContext(),peopleObj.getFullName(),Toast.LENGTH_SHORT).show();
+                if(!peopleObj.isSelected()) {
+                    peopleObj.setSelected(true);
+                    mSendButton.setVisibility(View.VISIBLE);
+                } else {
+                    peopleObj.setSelected(false);
+                }
+
+                mAdapter.notifyDataSetChanged();
             }
         });
         mPeoplesListView.setAdapter(mAdapter);

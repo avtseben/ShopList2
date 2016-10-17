@@ -4,6 +4,7 @@ public class People {
 
     String fullName;
     String number;
+    boolean selected;
 
     public People(String fullName, String number) {
 
@@ -12,6 +13,14 @@ public class People {
     }
     public String getFullName() {
         return fullName;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+
+    public boolean isSelected() {
+        return selected;
     }
 
     public String getNumber() {

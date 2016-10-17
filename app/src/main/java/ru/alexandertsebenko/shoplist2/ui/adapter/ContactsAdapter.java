@@ -46,7 +46,7 @@ public class ContactsAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, final ViewGroup viewGroup) {
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_contacts,viewGroup,false);//Инфэйтим
@@ -54,6 +54,11 @@ public class ContactsAdapter extends BaseAdapter {
         final People people = (People) getItem(position);
         ((TextView) convertView.findViewById(R.id.contact_name)).setText(people.getFullName());
         ((TextView) convertView.findViewById(R.id.contact_number)).setText(people.getNumber());
+        if(!people.isSelected()){
+           convertView.setBackgroundColor(0x00000000);
+        } else {
+            convertView.setBackgroundColor(0xFF00FF00);
+        }
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
