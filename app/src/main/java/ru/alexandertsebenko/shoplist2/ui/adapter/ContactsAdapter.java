@@ -13,10 +13,12 @@ import java.util.List;
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.People;
 
-/**
- * Created by avtseben on 16.10.2016.
- */
 public class ContactsAdapter extends BaseAdapter {
+
+    public interface OnContactClickListener {
+        void onContactClicked(People peopleObj);
+    }
+    private OnContactClickListener listener;
 
     List<People> mPeoples;
     Context mContext;
@@ -25,11 +27,9 @@ public class ContactsAdapter extends BaseAdapter {
         this.mPeoples = data;
         this.mContext = context;
     }
-    public void boo(){
-
-        System.out.println("Adapter Creating");
+    public void setListener(OnContactClickListener listener){
+        this.listener = listener;
     }
-
     @Override
     public int getCount() {
         return mPeoples.size();
@@ -51,11 +51,15 @@ public class ContactsAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.list_item_contacts,viewGroup,false);//Инфэйтим
         }
-        People people = (People) getItem(position);
-        System.out.println(people.getFullName());
-        System.out.println(people.getNumber());
+        final People people = (People) getItem(position);
         ((TextView) convertView.findViewById(R.id.contact_name)).setText(people.getFullName());
         ((TextView) convertView.findViewById(R.id.contact_number)).setText(people.getNumber());
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onContactClicked(people);
+            }
+        });
         return convertView;
     }
 }

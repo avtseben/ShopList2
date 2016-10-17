@@ -44,8 +44,13 @@ public class SendFragment extends Fragment {
         mPeoplesListView = (ListView) view.findViewById(R.id.contact_list);
         mPeoples = readContacts();
         mAdapter = new ContactsAdapter(mPeoples,view.getContext());
+        mAdapter.setListener(new ContactsAdapter.OnContactClickListener() {
+            @Override
+            public void onContactClicked(People peopleObj) {
+                Toast.makeText(getContext(),peopleObj.getFullName(),Toast.LENGTH_SHORT).show();
+            }
+        });
         mPeoplesListView.setAdapter(mAdapter);
-        mAdapter.boo();
         return view;
     }
 
