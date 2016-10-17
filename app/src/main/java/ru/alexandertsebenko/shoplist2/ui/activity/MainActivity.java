@@ -15,10 +15,11 @@ import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.ProdCategory;
+import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.fragment.TopFragment;
 import ru.alexandertsebenko.shoplist2.utils.ProductXmlParser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TopFragment.OnShopListItemClickListener{
 
     private static final String TOP_FRAGMENT_TAG = "tft";
     private FragmentManager mFragManager;
@@ -63,4 +64,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onItemClicked(ShopList shopListObj) {
+        Intent intentToShopList = new Intent(this,ShopListActivity.class);
+        intentToShopList.putExtra(ShopList.class.getCanonicalName(), shopListObj);
+        startActivity(intentToShopList);
+    }
 }

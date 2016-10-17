@@ -1,5 +1,6 @@
 package ru.alexandertsebenko.shoplist2.ui.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -22,6 +23,11 @@ import ru.alexandertsebenko.shoplist2.ui.adapter.TopListAdapter;
 
 public class TopFragment extends Fragment {
 
+    public interface OnShopListItemClickListener {
+        void onItemClicked(ShopList shopListObj);
+    }
+    public OnShopListItemClickListener listener;
+
     private DataSource mDataSource;
     private List<ShopList> mTopList;
     private RecyclerView mRecyclerView;
@@ -42,6 +48,15 @@ public class TopFragment extends Fragment {
 
         return view;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if(listener == null) {
+            this.listener = (OnShopListItemClickListener) context;
+        }
+    }
+
     private void setUpRecyclerView(View view){
         mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_top);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
@@ -51,11 +66,7 @@ public class TopFragment extends Fragment {
         mAdapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                ShopList sl = mTopList.get(position);
-                Toast.makeText(itemView.getContext(), "Click on " + sl.getName(), Toast.LENGTH_SHORT).show();
-                Intent intentToShopList = new Intent(getContext(),ShopListActivity.class);
-                intentToShopList.putExtra(ShopList.class.getCanonicalName(), sl);
-                startActivity(intentToShopList);
+                listener.onItemClicked(mTopList.get(position));
             }
         });
         mRecyclerView.setAdapter(mAdapter);
