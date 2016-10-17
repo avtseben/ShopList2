@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.People;
+import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ContactsAdapter;
+import ru.alexandertsebenko.shoplist2.utils.DateBuilder;
 import ru.alexandertsebenko.shoplist2.utils.MyApplication;
 
 /**
@@ -33,10 +36,20 @@ public class SendFragment extends Fragment {
 
     private ListView mPeoplesListView;
     private ContactsAdapter mAdapter;
-    private boolean mHasSelected;
     private Button mSendButton;
+    private TextView mShopListName;
+    private TextView mShopListDate;
+    private ShopList mShopList;
 
     public SendFragment() {}
+
+    public static SendFragment newInstance(ShopList ShopListPOJO) {
+        SendFragment sf = new SendFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ProductListFragment.SHOP_LIST_POJO, ShopListPOJO);
+        sf.setArguments(args);
+        return sf;
+    }
 
     @Nullable
     @Override
@@ -45,6 +58,8 @@ public class SendFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_send,container, false);
         mSendButton = (Button) view.findViewById(R.id.send_button2);
+        mShopListName = (TextView) view.findViewById(R.id.tv_list_name2);
+        mShopListDate = (TextView) view.findViewById(R.id.tv_list_date2);
         mPeoplesListView = (ListView) view.findViewById(R.id.contact_list);
         mPeoples = readContacts();
         mAdapter = new ContactsAdapter(mPeoples,view.getContext());
@@ -69,8 +84,15 @@ public class SendFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         setupListView();
+        ShopList ShopListPojo = getArguments().getParcelable(ProductListFragment.SHOP_LIST_POJO);
+        if(ShopListPojo != null){
+            mShopList = ShopListPojo;
+            mShopListName.setText(mShopList.getName());
+            mShopListDate.setText(DateBuilder.timeTitleBuilder(mShopList.getDateMilis()));
+        }
 
     }
+
 
     public List<People> readContacts(){
         List<People> peoples = new ArrayList<>();

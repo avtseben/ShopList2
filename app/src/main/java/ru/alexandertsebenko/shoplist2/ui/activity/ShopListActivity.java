@@ -104,9 +104,10 @@ public class ShopListActivity extends AppCompatActivity implements
      * список
      */
     @Override
-    public void onSendButtonClicked() {
+    public void onSendButtonClicked(ShopList shopListPojo) {
         FragmentTransaction ft = mFragManager.beginTransaction();
-        ft.replace(R.id.fl_shoplistfragment_container, new SendFragment(), SEND_FRAGMENT_TAG);
+        SendFragment sf = SendFragment.newInstance(shopListPojo);
+        ft.replace(R.id.fl_shoplistfragment_container, sf, SEND_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
     }
@@ -121,6 +122,10 @@ public class ShopListActivity extends AppCompatActivity implements
         ft.commit();
     }
 
+    /**
+     * выбран список создаём экземпляр ProductListFragment и передаём
+     * ему объект - список
+     */
     @Override
     public void onItemClicked(ShopList shopListObj) {
         mState = DO_SHOPPING_STATE;

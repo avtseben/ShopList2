@@ -23,4 +23,24 @@ android:layout_width="match_parent" android:layout_height="match_parent">
         android:layout_height="match_parent"
         android:id="@+id/contact_list"
         android:layout_below="@+id/iv_parent_background" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Large Text"
+        android:id="@+id/tv_list_name2"
+        android:layout_alignBottom="@+id/send_button2"
+        android:layout_toRightOf="@+id/iv_parent_background"
+        android:layout_toEndOf="@+id/iv_parent_background" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/tv_list_date2"
+        android:layout_below="@+id/tv_list_name2"
+        android:layout_alignRight="@+id/tv_list_name2"
+        android:layout_alignEnd="@+id/tv_list_name2" />
 </RelativeLayout>

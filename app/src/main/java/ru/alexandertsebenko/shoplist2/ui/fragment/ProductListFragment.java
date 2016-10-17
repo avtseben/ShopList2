@@ -36,7 +36,7 @@ public class ProductListFragment extends Fragment {
 
     public static final int LIST_PREPARE_STATE = 1;
     public static final int DO_SHOPPING_STATE = 2;
-    private static final String SHOP_LIST_POJO = "slpojo";
+    public static final String SHOP_LIST_POJO = "slpojo";
     RecyclerView mRecyclerView;
     List<ParentItem> mParentItemList;
     ShopListAdapter mAdapter;
@@ -200,14 +200,14 @@ public class ProductListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(listener != null){
-                    listener.onSendButtonClicked();
+                    listener.onSendButtonClicked(mShopList);
                 }
             }
         });
     }
     private OnSendButtonClickListener listener;
     public interface OnSendButtonClickListener {
-        void onSendButtonClicked();
+        void onSendButtonClicked(ShopList shopListPojo);
     }
 
     @Override
