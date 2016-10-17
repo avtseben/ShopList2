@@ -46,7 +46,7 @@ public class SendFragment extends Fragment {
         mAdapter = new ContactsAdapter(mPeoples,view.getContext());
         mPeoplesListView.setAdapter(mAdapter);
         mAdapter.boo();
-        return super.onCreateView(inflater, container, savedInstanceState);
+        return view;
     }
 
     @Override
