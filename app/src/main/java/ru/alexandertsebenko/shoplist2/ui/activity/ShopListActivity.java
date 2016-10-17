@@ -23,22 +23,25 @@ import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
 import ru.alexandertsebenko.shoplist2.ui.fragment.SendFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
+import ru.alexandertsebenko.shoplist2.ui.fragment.TopFragment;
 
 public class ShopListActivity extends AppCompatActivity implements
+        TopFragment.OnNewListButtonClickListener,
+        TopFragment.OnShopListItemClickListener,
         ProductListFragment.OnSendButtonClickListener{
 
     public static final int LIST_PREPARE_STATE = 1;
     public static final int DO_SHOPPING_STATE = 2;
-    private final String LIST_FRAGMENT_TAG = "slft";
-    private final String SEND_FRAGMENT_TAG = "sndft";
+    private static final String LIST_FRAGMENT_TAG = "slft";
+    private static final String SEND_FRAGMENT_TAG = "sndft";
+    private static final String TOP_FRAGMENT_TAG = "tft";
     public static int mState;
 
-    private ShopList mShopListObj;
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
     private FloatingActionButton mFab;
-    private ProductListFragment mProdFragment;
+    private FragmentTransaction mFTransaction;
 
 
     @Override
@@ -48,13 +51,17 @@ public class ShopListActivity extends AppCompatActivity implements
 
         //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
-        FragmentTransaction ft = mFragManager.beginTransaction();
+        mFTransaction = mFragManager.beginTransaction();
+        mFTransaction.replace(R.id.fl_shoplistfragment_container, new TopFragment(), TOP_FRAGMENT_TAG);
+        mFTransaction.addToBackStack(null);
+        mFTransaction.commit();
 
+/*
         Intent inIntent = getIntent();
         mShopListObj = inIntent.getParcelableExtra(ShopList.class.getCanonicalName());
         //Если в Интенте есть список то открываем его и переходим в режим "В магазине"
         if(mShopListObj != null) {
-            mState = DO_SHOPPING_STATE;
+            TE;
             mProdFragment = ProductListFragment.newInstance(mShopListObj);
         } else {
             //По умолчанию в режиме составления списка
@@ -64,6 +71,7 @@ public class ShopListActivity extends AppCompatActivity implements
         ft.replace(R.id.fl_shoplistfragment_container, mProdFragment, LIST_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
+*/
 
     }
     @Override
@@ -151,6 +159,26 @@ public class ShopListActivity extends AppCompatActivity implements
     public void onSendButtonClicked() {
         FragmentTransaction ft = mFragManager.beginTransaction();
         ft.replace(R.id.fl_shoplistfragment_container, new SendFragment(), SEND_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
+    public void onNewListClicked() {
+        mState = LIST_PREPARE_STATE;
+        ProductListFragment plf = ProductListFragment.newInstance(null);
+        FragmentTransaction ft = mFragManager.beginTransaction();
+        ft.replace(R.id.fl_shoplistfragment_container, plf, LIST_FRAGMENT_TAG);
+        ft.addToBackStack(null);
+        ft.commit();
+    }
+
+    @Override
+    public void onItemClicked(ShopList shopListObj) {
+        mState = DO_SHOPPING_STATE;
+        ProductListFragment plf = ProductListFragment.newInstance(shopListObj);
+        FragmentTransaction ft = mFragManager.beginTransaction();
+        ft.replace(R.id.fl_shoplistfragment_container, plf, LIST_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
     }

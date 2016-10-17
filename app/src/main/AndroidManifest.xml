@@ -11,14 +11,12 @@
         android:supportsRtl="true"
         android:launchMode="singleTop"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.activity.MainActivity">
+        <activity android:name=".ui.activity.ShopListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".ui.activity.ShopListActivity"
             android:theme="@style/AppTheme">
         </activity>
 </application>

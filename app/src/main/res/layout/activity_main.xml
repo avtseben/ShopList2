@@ -7,16 +7,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_start_shop_list"
-        android:text="list" />
-    <Button
-        android:onClick="onClick"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_test"
-        android:text="testParse"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/btn_start_shop_list"
-        android:layout_toEndOf="@+id/btn_start_shop_list" />
+        android:text="new list" />
 
     <FrameLayout
         android:layout_width="match_parent"

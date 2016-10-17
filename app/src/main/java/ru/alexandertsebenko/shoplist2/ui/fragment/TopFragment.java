@@ -11,6 +11,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.List;
@@ -26,7 +27,11 @@ public class TopFragment extends Fragment {
     public interface OnShopListItemClickListener {
         void onItemClicked(ShopList shopListObj);
     }
-    public OnShopListItemClickListener listener;
+    public interface OnNewListButtonClickListener {
+        void onNewListClicked();
+    }
+    public OnShopListItemClickListener listenerShopListSelected;
+    public OnNewListButtonClickListener listenerNewList;
 
     private DataSource mDataSource;
     private List<ShopList> mTopList;
@@ -46,14 +51,24 @@ public class TopFragment extends Fragment {
         setUpRecyclerView(view);
         setUpItemTouchHelper();
 
+        Button btn = (Button) view.findViewById(R.id.btn_newList);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listenerNewList.onNewListClicked();
+            }
+        });
         return view;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if(listener == null) {
-            this.listener = (OnShopListItemClickListener) context;
+        if(listenerShopListSelected == null) {
+            this.listenerShopListSelected = (OnShopListItemClickListener) context;
+        }
+        if(listenerNewList == null) {
+            this.listenerNewList = (OnNewListButtonClickListener) context;
         }
     }
 
@@ -66,7 +81,7 @@ public class TopFragment extends Fragment {
         mAdapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
             @Override
             public void onItemClick(View itemView, int position) {
-                listener.onItemClicked(mTopList.get(position));
+                listenerShopListSelected.onItemClicked(mTopList.get(position));
             }
         });
         mRecyclerView.setAdapter(mAdapter);
