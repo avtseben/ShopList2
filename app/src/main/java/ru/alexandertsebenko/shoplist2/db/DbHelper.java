@@ -18,6 +18,7 @@ public class DbHelper extends SQLiteOpenHelper{
 
     Context mContext;
     public static final String TABLE_PRODUCTS = "products";
+    public static final String TABLE_MEASURES = "measures";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_NAME = "name";
@@ -37,7 +38,7 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String COLUMN_GLOBAL_UUID = "global_uuid";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
 
     //TODO рефакторить БД вынести категории в отдельную таблицу
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -67,6 +68,10 @@ public class DbHelper extends SQLiteOpenHelper{
             + " text, " + COLUMN_UPDATE
             + " text, " + COLUMN_DATE
             + " integer);";
+    private static final String MEASURES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_MEASURES + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_NAME
+            + " text);";
 
     public DbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -79,6 +84,7 @@ public class DbHelper extends SQLiteOpenHelper{
         database.execSQL(PRODUCT_INSTANCES_TABLE_CREATE);
         database.execSQL(SHOPLIST_TABLE_CREATE);
         database.execSQL(PI_UPDATES_TABLE_CREATE);
+        database.execSQL(MEASURES_TABLE_CREATE);
 
         //Load data
         ArrayList<String> inserts = makeArrayOfInserts();
@@ -86,6 +92,11 @@ public class DbHelper extends SQLiteOpenHelper{
             Log.d(getClass().getSimpleName(),s);
             database.execSQL(s);
         }
+        //Set measures TODO заглушка нужно вынести в xml
+        database.execSQL("INSERT INTO " +
+                TABLE_MEASURES + " (" +
+                COLUMN_NAME + ") " +
+                "VALUES ('шутка');");
     }
 
     @Override
@@ -94,6 +105,7 @@ public class DbHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_INSTANCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP_LISTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PI_UPDATES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEASURES);
         onCreate(db);
     }
     private String makeSQLInsert(String category, String name, String image) {

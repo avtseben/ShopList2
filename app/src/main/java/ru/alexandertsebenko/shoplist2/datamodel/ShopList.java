@@ -50,6 +50,10 @@ public class ShopList implements Parcelable{
         this.name = name;
     }
 
+    public void setProdList(List<ProductInstance> prodList) {
+        this.prodList = prodList;
+    }
+
     @Override
     public int describeContents() {
         return 0;

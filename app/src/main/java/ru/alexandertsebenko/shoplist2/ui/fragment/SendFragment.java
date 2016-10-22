@@ -8,6 +8,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.People;
+import ru.alexandertsebenko.shoplist2.datamodel.PeoplePleaseBuy;
+import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
+import ru.alexandertsebenko.shoplist2.db.DataSource;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ContactsAdapter;
 import ru.alexandertsebenko.shoplist2.utils.DateBuilder;
 import ru.alexandertsebenko.shoplist2.utils.MyApplication;
@@ -72,11 +78,22 @@ public class SendFragment extends Fragment {
                 } else {
                     peopleObj.setSelected(false);
                 }
-
                 mAdapter.notifyDataSetChanged();
             }
         });
         mPeoplesListView.setAdapter(mAdapter);
+        mSendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                People me = new People("ShopList User","89133166336");
+                PeoplePleaseBuy ppb = new PeoplePleaseBuy(
+                        me,
+                        getSelectedPeoples(mPeoples),
+                        getProdList(mShopList));
+                System.out.println(ppbToString(ppb));
+                sendSms(ppbToString(ppb),ppb.getToWho());
+            }
+        });
         return view;
     }
 
@@ -90,9 +107,7 @@ public class SendFragment extends Fragment {
             mShopListName.setText(mShopList.getName());
             mShopListDate.setText(DateBuilder.timeTitleBuilder(mShopList.getDateMilis()));
         }
-
     }
-
 
     public List<People> readContacts(){
         List<People> peoples = new ArrayList<>();
@@ -123,6 +138,57 @@ public class SendFragment extends Fragment {
         }
         return peoples;
     }
+    private List<People> getSelectedPeoples(List<People> peopleList){
+        ArrayList selectedPeoples = new ArrayList<People>();
+        for(People p : peopleList) {
+            if(p.isSelected()) {
+                selectedPeoples.add(p);
+            }
+        }
+        return selectedPeoples;
+    }
+
+    /**
+     * Возвращает все покупки в списке
+     * TODO нужно добавлять в Объект ShopList список ProductInstanes
+     * а не доставать его из БД
+     * @param shopList
+     * @return
+     */
+    private List<ProductInstance> getProdList(ShopList shopList){
+        DataSource dataSource = new DataSource(getContext());
+        dataSource.open();
+        return dataSource.getProductInstancesByShopListId(shopList.getId());
+    }
+
+    /**
+     * Возвращает тескт для SMS сообщения
+     * @param ppb
+     * @return
+     */
+    private String ppbToString(PeoplePleaseBuy ppb){
+        StringBuilder sb = new StringBuilder();
+        sb.append(getResources().getString(R.string.sms_head) + "\n");
+        sb.append("\n");
+        for (ProductInstance pi : ppb.getPil()){
+            sb.append(pi.getProduct().getName() + ", " + pi.getQuantity() + " " + pi.getMeasure() + "\n");
+        }
+        return sb.toString();
+    }
+    private void sendSms(String msg, List<People> peopleList){
+        SmsManager smsManager = SmsManager.getDefault();
+        for (People p : peopleList) {
+            try {
+                smsManager.sendTextMessage(p.getNumber(), null, msg, null, null);
+                Toast.makeText(getContext(),msg + " to: " + p.getFullName(),Toast.LENGTH_SHORT).show();
+            }
+            catch (Exception e) {
+                Toast.makeText(getContext(),"SMS send failed",Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void setupListView() {
     }
 }

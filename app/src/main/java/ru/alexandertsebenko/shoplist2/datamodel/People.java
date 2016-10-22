@@ -5,11 +5,13 @@ public class People {
     String fullName;
     String number;
     boolean selected;
+    //Есть ли у этого человека приложение, иначе посылать список по СМС
+    boolean accounted;
 
     public People(String fullName, String number) {
-
         this.fullName = fullName;
         this.number = number;
+        accounted = false;//TODO заглушка
     }
     public String getFullName() {
         return fullName;
@@ -21,6 +23,9 @@ public class People {
 
     public boolean isSelected() {
         return selected;
+    }
+    public boolean isAccounted() {
+        return accounted;
     }
 
     public String getNumber() {

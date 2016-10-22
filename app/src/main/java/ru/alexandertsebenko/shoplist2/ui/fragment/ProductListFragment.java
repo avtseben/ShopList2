@@ -132,6 +132,7 @@ public class ProductListFragment extends Fragment {
                 product.getId(),
                 quantity,measure,state);
 
+
         return new ProductInstance(id,product,quantity,measure,state);//TODO: хардкод заглушка
         //экземпляр покупки 1 штука
     }

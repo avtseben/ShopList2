@@ -21,5 +21,6 @@
     <string name="note_made_in_future_humor">привет от Марти Макфлая</string>
     <string name="findContact">find person&#8230;</string>
     <string name="defaultListName">Список</string>
+    <string name="sms_head">Пожалуйста купи:</string>
 
 </resources>

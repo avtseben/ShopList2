@@ -82,6 +82,14 @@ public class DataSource {
                 cursor.getString(2),
                 cursor.getString(3));
     }
+    public String getMeasureById(long id) {
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_MEASURES,
+                new String[]{DbHelper.COLUMN_NAME},
+                DbHelper.COLUMN_ID + " = " + id,
+                null,null,null,null);
+        cursor.moveToFirst();
+        return cursor.getString(0);
+    }
     //TODO переделать всё на AsyncTask
     public long addNewShopList(String listName,long date){
         ContentValues values = new ContentValues();
@@ -151,7 +159,7 @@ public class DataSource {
                     cursor.getLong(0),
                     getProductById(cursor.getLong(1)),
                     cursor.getFloat(2),
-                    cursor.getString(3),
+                    getMeasureById(cursor.getLong(3)),
                     cursor.getInt(4)));
             cursor.moveToNext();
         }
