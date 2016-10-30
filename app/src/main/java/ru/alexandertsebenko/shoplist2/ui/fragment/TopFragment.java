@@ -17,8 +17,10 @@ import android.widget.Toast;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
+import ru.alexandertsebenko.shoplist2.datamodel.PeoplePleaseBuy;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.db.DataSource;
+import ru.alexandertsebenko.shoplist2.net.Client;
 import ru.alexandertsebenko.shoplist2.ui.activity.ShopListActivity;
 import ru.alexandertsebenko.shoplist2.ui.adapter.TopListAdapter;
 
@@ -36,6 +38,7 @@ public class TopFragment extends Fragment {
     private DataSource mDataSource;
     private List<ShopList> mTopList;
     private RecyclerView mRecyclerView;
+    private Button mGetButton;
     private TopListAdapter mAdapter;
 
     @Nullable
@@ -52,6 +55,14 @@ public class TopFragment extends Fragment {
         setUpItemTouchHelper();
 
         Button btn = (Button) view.findViewById(R.id.btn_newList);
+        mGetButton = (Button) view.findViewById(R.id.get_list_button);
+        mGetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Client c = new Client();
+                c.getPpb("9139209220");
+            }
+        });
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

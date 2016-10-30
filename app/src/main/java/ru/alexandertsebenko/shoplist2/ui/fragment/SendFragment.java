@@ -26,9 +26,11 @@ import java.util.List;
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.People;
 import ru.alexandertsebenko.shoplist2.datamodel.PeoplePleaseBuy;
+import ru.alexandertsebenko.shoplist2.datamodel.Pinstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.db.DataSource;
+import ru.alexandertsebenko.shoplist2.net.Client;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ContactsAdapter;
 import ru.alexandertsebenko.shoplist2.utils.DateBuilder;
 import ru.alexandertsebenko.shoplist2.utils.MyApplication;
@@ -87,11 +89,15 @@ public class SendFragment extends Fragment {
             public void onClick(View view) {
                 People me = new People("ShopList User","89133166336");
                 PeoplePleaseBuy ppb = new PeoplePleaseBuy(
-                        me,
-                        getSelectedPeoples(mPeoples),
+                        me.getNumber(),
+                        getNumbersOfSelectedPeoples(mPeoples),
                         getProdList(mShopList));
                 System.out.println(ppbToString(ppb));
-                sendSms(ppbToString(ppb),ppb.getToWho());
+                //Test code
+                Client c = new Client();
+                c.postPpb(ppb);
+
+//                sendSms(ppbToString(ppb),ppb.getToWho());//TODO uncomment in future
             }
         });
         return view;
@@ -147,6 +153,15 @@ public class SendFragment extends Fragment {
         }
         return selectedPeoples;
     }
+    private List<String> getNumbersOfSelectedPeoples(List<People> peopleList){
+        ArrayList numbers = new ArrayList<String>();
+        for(People p : peopleList) {
+            if(p.isSelected()) {
+                numbers.add(p.getNumber());
+            }
+        }
+        return numbers;
+    }
 
     /**
      * Возвращает все покупки в списке
@@ -155,11 +170,17 @@ public class SendFragment extends Fragment {
      * @param shopList
      * @return
      */
-    private List<ProductInstance> getProdList(ShopList shopList){
+/*    private List<ProductInstance> getProdList(ShopList shopList){
         DataSource dataSource = new DataSource(getContext());
         dataSource.open();
         return dataSource.getProductInstancesByShopListId(shopList.getId());
+    }*/
+    private List<Pinstance> getProdList(ShopList shopList){
+        DataSource dataSource = new DataSource(getContext());
+        dataSource.open();
+        return dataSource.getPinstancesByShopListId(shopList.getId());
     }
+
 
     /**
      * Возвращает тескт для SMS сообщения
@@ -170,17 +191,16 @@ public class SendFragment extends Fragment {
         StringBuilder sb = new StringBuilder();
         sb.append(getResources().getString(R.string.sms_head) + "\n");
         sb.append("\n");
-        for (ProductInstance pi : ppb.getPil()){
-            sb.append(pi.getProduct().getName() + ", " + pi.getQuantity() + " " + pi.getMeasure() + "\n");
+        for (Pinstance pi : ppb.getPil()){
+            sb.append(pi.getProduct() + ", " + pi.getQuantity() + " " + pi.getMeasure() + "\n");
         }
         return sb.toString();
     }
-    private void sendSms(String msg, List<People> peopleList){
+    private void sendSms(String msg, List<String> numberList){
         SmsManager smsManager = SmsManager.getDefault();
-        for (People p : peopleList) {
+        for (String n : numberList) {
             try {
-                smsManager.sendTextMessage(p.getNumber(), null, msg, null, null);
-                Toast.makeText(getContext(),msg + " to: " + p.getFullName(),Toast.LENGTH_SHORT).show();
+                smsManager.sendTextMessage(n, null, msg, null, null);
             }
             catch (Exception e) {
                 Toast.makeText(getContext(),"SMS send failed",Toast.LENGTH_SHORT).show();

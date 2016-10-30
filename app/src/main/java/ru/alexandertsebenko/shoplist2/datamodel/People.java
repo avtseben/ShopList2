@@ -5,7 +5,6 @@ public class People {
     String fullName;
     String number;
     boolean selected;
-    //Есть ли у этого человека приложение, иначе посылать список по СМС
     boolean accounted;
 
     public People(String fullName, String number) {

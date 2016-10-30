@@ -13,6 +13,8 @@ import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.alexandertsebenko.shoplist2.datamodel.PeoplePleaseBuy;
+import ru.alexandertsebenko.shoplist2.datamodel.Pinstance;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
 import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
@@ -77,6 +79,8 @@ public class DataSource {
                 DbHelper.COLUMN_ID + " = " + id,
                 null,null,null,null);
         cursor.moveToFirst();
+        int c = cursor.getColumnCount();
+        System.out.println("count " + c);
         return new Product(cursor.getInt(0),
                 cursor.getString(1),
                 cursor.getString(2),
@@ -99,13 +103,15 @@ public class DataSource {
         return mDataBase.insert(SL_TABLE,null,values);
     }
     public long addProductInstance(long listId, long productId,
-                                   int quantity, String measure, int state){
+                                   int quantity, String measure, int state,
+                                   String uuid){
         ContentValues values = new ContentValues();
         values.put(DbHelper.COLUMN_SHOPLIST_ID,listId);
         values.put(DbHelper.COLUMN_PRODUCT_ID,productId);
         values.put(DbHelper.COLUMN_QUANTITY,quantity);
         values.put(DbHelper.COLUMN_MEASURE_ID,1);//TODO заглушка - убрать
         values.put(DbHelper.COLUMN_STATE,state);
+        values.put(DbHelper.COLUMN_GLOBAL_UUID,uuid);
 
         return mDataBase.insert(DbHelper.TABLE_PRODUCT_INSTANCES,null,values);
     }
@@ -164,6 +170,49 @@ public class DataSource {
             cursor.moveToNext();
         }
         return list;
+
+    }
+
+    public List<Pinstance> getPinstancesByShopListId(long id) {
+        ArrayList<Pinstance> list = new ArrayList<>();
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_PRODUCT_INSTANCES,
+                new String[]{
+                        DbHelper.COLUMN_GLOBAL_UUID,
+                        DbHelper.COLUMN_PRODUCT_ID,
+                        DbHelper.COLUMN_QUANTITY,
+                        DbHelper.COLUMN_MEASURE_ID},
+                DbHelper.COLUMN_SHOPLIST_ID + " = " + id,
+                null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            list.add(new Pinstance(
+                    cursor.getString(0),
+                    getProductById(cursor.getLong(1)).getName(),
+                    cursor.getFloat(2),
+                    getMeasureById(cursor.getLong(3))));
+            cursor.moveToNext();
+        }
+        return list;
+    }
+    public long getProductIdByProductName(String name){
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_PRODUCTS,
+                new String[]{DbHelper.COLUMN_ID},
+                DbHelper.COLUMN_NAME + " = " + "'" + name + "'",
+                null,null,null,null);
+        cursor.moveToFirst();
+        return cursor.getLong(0);
+    }
+
+    public void saveNewListFromPpb(PeoplePleaseBuy ppb) {
+        long shopListId = addNewShopList("От " + ppb.getFromWho(), System.currentTimeMillis());
+        for (Pinstance pi : ppb.getPil()){
+             addProductInstance(shopListId,
+                     getProductIdByProductName(pi.getProduct()),
+                     1,//TODO в срочном порядке !!! Какого фига я здесь в базе делал INT. Переделать на Float
+                     pi.getMeasure(),
+                     ProductInstance.IN_LIST,
+                     pi.getGlobalId());
+        }
 
     }
 }

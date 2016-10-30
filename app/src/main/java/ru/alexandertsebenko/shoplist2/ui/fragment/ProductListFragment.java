@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
@@ -126,11 +127,12 @@ public class ProductListFragment extends Fragment {
     private ProductInstance createProductInstance(Product product){
         int quantity = 1;
         String measure = "штука";
+        String uuid = UUID.randomUUID().toString();
         int state = ProductInstance.IN_LIST;
         long id = mDataSource.addProductInstance(
                 mShopList.getId(),
                 product.getId(),
-                quantity,measure,state);
+                quantity,measure,state,uuid);
 
 
         return new ProductInstance(id,product,quantity,measure,state);//TODO: хардкод заглушка

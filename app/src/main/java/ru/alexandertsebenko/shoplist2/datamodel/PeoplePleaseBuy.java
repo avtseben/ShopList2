@@ -1,5 +1,7 @@
 package ru.alexandertsebenko.shoplist2.datamodel;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -9,25 +11,29 @@ import java.util.List;
  */
 public class PeoplePleaseBuy {
 
-    People fromWho;
-    List<People> toWho;
-    List<ProductInstance> pil;
+    @SerializedName("from")
+//    People fromWho;
+    String fromWho;
+    @SerializedName("to")
+    List<String> toWho;
 
-    public PeoplePleaseBuy(People fromWho, List<People> toWho, List<ProductInstance> pil) {
+    List<Pinstance> pil;
+
+    public PeoplePleaseBuy(String fromWho, List<String> toWho, List<Pinstance> pil) {
         this.fromWho = fromWho;
         this.toWho = toWho;
         this.pil = pil;
     }
 
-    public People getFromWho() {
+    public String getFromWho() {
         return fromWho;
     }
 
-    public List<People> getToWho() {
+    public List<String> getToWho() {
         return toWho;
     }
 
-    public List<ProductInstance> getPil() {
+    public List<Pinstance> getPil() {
         return pil;
     }
 }
