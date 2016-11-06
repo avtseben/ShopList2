@@ -1,17 +1,22 @@
 package ru.alexandertsebenko.shoplist2.ui.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.telephony.SmsManager;
+import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -23,6 +28,7 @@ import ru.alexandertsebenko.shoplist2.db.DataSource;
 import ru.alexandertsebenko.shoplist2.net.Client;
 import ru.alexandertsebenko.shoplist2.ui.activity.ShopListActivity;
 import ru.alexandertsebenko.shoplist2.ui.adapter.TopListAdapter;
+import ru.alexandertsebenko.shoplist2.utils.MyApplication;
 
 public class TopFragment extends Fragment {
 
@@ -54,13 +60,17 @@ public class TopFragment extends Fragment {
         setUpRecyclerView(view);
         setUpItemTouchHelper();
 
-        Button btn = (Button) view.findViewById(R.id.btn_newList);
+        final SharedPreferences pref = this
+                .getActivity()
+                .getSharedPreferences("ru.alexandertsebenko.shoplist2", Context.MODE_PRIVATE);
+        ImageView btn = (ImageView) view.findViewById(R.id.btn_newList);
         mGetButton = (Button) view.findViewById(R.id.get_list_button);
         mGetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Client c = new Client();
                 c.getPpb("9139209220");
+                System.out.println(pref.getString(ShopListActivity.MY_NUMBER_PREF,null));
             }
         });
         btn.setOnClickListener(new View.OnClickListener() {

@@ -77,7 +77,6 @@
 		<product>Вермишель паутинка</product>
 		<product>Макароны спираль</product>
 		<product>Макароны рожки</product>
-		<product>Сметана</product>
 		<product>Мука</product>
 		<product>Мука пшеничная</product>
 		<product>Мука цельнозерновая</product>
@@ -88,7 +87,7 @@
 		<product>Смесь для оладьев</product>
 		<product>Льняная мука</product>
 		<product>Мука рисовая</product>	
-                <product>Рисовая бумага</product>                
+        <product>Рисовая бумага</product>
 </category>
 <category
 	name = "Хлеб"
@@ -96,20 +95,20 @@
 		<product>Хлеб</product>
 		<product>Батон</product>
 		<product>Французский батон</product>
-                <product>Лаваш</product>
-                <product>Багет</product>
-                <product>Чиабатта</product>
-                <product>Хлебцы</product>
-                <product>Маца</product>
-                <product>Булочки для хот-догов</product>
-                <product>Булочки для гамбургеров</product>
-                <product>Тарталетки</product>
-                <product>Сухари</product>
-                <product>Бородинский</product>
-                <product>Лаваш</product>
-                <product>Бездрожжевой</product>
-                <product>Ржаной</product>
-                <product>Хлеб с семечками</product>
+        <product>Лаваш</product>
+        <product>Багет</product>
+        <product>Чиабатта</product>
+        <product>Хлебцы</product>
+        <product>Маца</product>
+        <product>Булочки для хот-догов</product>
+        <product>Булочки для гамбургеров</product>
+        <product>Тарталетки</product>
+        <product>Сухари</product>
+        <product>Бородинский</product>
+        <product>Лаваш</product>
+        <product>Бездрожжевой</product>
+        <product>Ржаной</product>
+        <product>Хлеб с семечками</product>
 </category>
 
 <category

@@ -1,24 +1,19 @@
 package ru.alexandertsebenko.shoplist2.ui.fragment;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.bignerdranch.expandablerecyclerview.Model.ParentListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +22,12 @@ import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.People;
 import ru.alexandertsebenko.shoplist2.datamodel.PeoplePleaseBuy;
 import ru.alexandertsebenko.shoplist2.datamodel.Pinstance;
-import ru.alexandertsebenko.shoplist2.datamodel.ProductInstance;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.db.DataSource;
 import ru.alexandertsebenko.shoplist2.net.Client;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ContactsAdapter;
 import ru.alexandertsebenko.shoplist2.utils.DateBuilder;
-import ru.alexandertsebenko.shoplist2.utils.MyApplication;
+import ru.alexandertsebenko.shoplist2.utils.Reform;
 
 /**
  * Фрагмент со списком контактов
@@ -106,7 +100,6 @@ public class SendFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        setupListView();
         ShopList ShopListPojo = getArguments().getParcelable(ProductListFragment.SHOP_LIST_POJO);
         if(ShopListPojo != null){
             mShopList = ShopListPojo;
@@ -126,7 +119,6 @@ public class SendFragment extends Fragment {
                 String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
                 String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                 if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                    System.out.println("name : " + name );
 
                     // get the phone number
                     Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null,
@@ -135,8 +127,7 @@ public class SendFragment extends Fragment {
                     while (pCur.moveToNext()) {
                         String phone = pCur.getString(
                                 pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        System.out.println("Phone" + phone);
-                        peoples.add(new People(name,phone));
+                        peoples.add(new People(name, Reform.normalizeNumber(phone)));
                     }
                     pCur.close();
                 }
@@ -170,11 +161,6 @@ public class SendFragment extends Fragment {
      * @param shopList
      * @return
      */
-/*    private List<ProductInstance> getProdList(ShopList shopList){
-        DataSource dataSource = new DataSource(getContext());
-        dataSource.open();
-        return dataSource.getProductInstancesByShopListId(shopList.getId());
-    }*/
     private List<Pinstance> getProdList(ShopList shopList){
         DataSource dataSource = new DataSource(getContext());
         dataSource.open();
@@ -207,8 +193,5 @@ public class SendFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void setupListView() {
     }
 }

@@ -1,8 +1,8 @@
 package ru.alexandertsebenko.shoplist2.ui.activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
@@ -13,12 +13,12 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.Toast;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
 import ru.alexandertsebenko.shoplist2.datamodel.ShopList;
 import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
+import ru.alexandertsebenko.shoplist2.ui.fragment.FirstRunFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.SendFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.ProductListFragment;
 import ru.alexandertsebenko.shoplist2.ui.fragment.TopFragment;
@@ -26,6 +26,7 @@ import ru.alexandertsebenko.shoplist2.ui.fragment.TopFragment;
 public class ShopListActivity extends AppCompatActivity implements
         TopFragment.OnNewListButtonClickListener,
         TopFragment.OnShopListItemClickListener,
+        FirstRunFragment.OnSaveClicked,
         ProductListFragment.OnSendButtonClickListener{
 
     public static final int LIST_PREPARE_STATE = 1;
@@ -33,29 +34,52 @@ public class ShopListActivity extends AppCompatActivity implements
     private static final String LIST_FRAGMENT_TAG = "slft";
     private static final String SEND_FRAGMENT_TAG = "sndft";
     private static final String TOP_FRAGMENT_TAG = "tft";
+    private static final String FIRST_RUN_FRAGMENT = "frf";
+    public static final String MY_NUMBER_PREF = "mynumber";
+    public static final String FIRST_RUN_PREF = "firstrun";
+    public static final String MY_FULLNAME_PREF = "myfullname";
     public static int mState;
 
     private AutoCompleteTextView mAcTextView;
     private SearchAutoCompleteAdapter mSearchAdapter;
     private FragmentManager mFragManager;
 
+    SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_list);
 
-        //Список продуктов представлен во фрагменте
         mFragManager = getSupportFragmentManager();
+        FragmentTransaction ft = mFragManager.beginTransaction();
+
+        //Работа с SharedPreference
+        prefs = getSharedPreferences("ru.alexandertsebenko.shoplist2", MODE_PRIVATE);
+        if (prefs.getBoolean(FIRST_RUN_PREF, true)) {
+            FirstRunFragment frf = new FirstRunFragment();
+            ft.replace(R.id.fl_shoplistfragment_container, frf, FIRST_RUN_FRAGMENT);
+            ft.addToBackStack(null);
+            ft.commit();
+            frf.addSharedPrefsToFragment(prefs);
+        } else {
+            runTopFragment();
+        }
+    }
+
+    private void runTopFragment() {
         FragmentTransaction ft = mFragManager.beginTransaction();
         ft.replace(R.id.fl_shoplistfragment_container, new TopFragment(), TOP_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
     }
+
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -134,5 +158,13 @@ public class ShopListActivity extends AppCompatActivity implements
         ft.replace(R.id.fl_shoplistfragment_container, plf, LIST_FRAGMENT_TAG);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void onSaveClicked() {
+        runTopFragment();
     }
 }

@@ -87,8 +87,6 @@ public class Client {
             @Override
             public void onResponse(Call<PeoplePleaseBuy> call, Response<PeoplePleaseBuy> response) {
                 if (response.body() != null) {
-                    System.out.println("In Async catch ppb");
-                    System.out.println(response.body().getFromWho());
                     catchListFromCloud(response.body());
                 }
             }
