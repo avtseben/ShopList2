@@ -25,7 +25,7 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String TABLE_SHOP_LISTS = "shop_lists";
     public static final String COLUMN_DATE = "date";
     public static final String TABLE_PRODUCT_INSTANCES = "product_instances";
-    public static final String COLUMN_SHOPLIST_ID = "showlist_id";
+    public static final String COLUMN_SHOPLIST_ID = "shoplist_id";
     public static final String COLUMN_PRODUCT_ID = "product_id";
     public static final String COLUMN_QUANTITY = "quantity";
     public static final String COLUMN_MEASURE_ID = "measure_id";
@@ -38,7 +38,7 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_GLOBAL_UUID = "global_uuid";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 12;
+    private static final int DATABASE_VERSION = 14;
 
     //TODO рефакторить БД вынести категории в отдельную таблицу
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -55,7 +55,8 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String PRODUCT_INSTANCES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PRODUCT_INSTANCES + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_SHOPLIST_ID
-            + " integer, " + COLUMN_PRODUCT_ID
+            + " integer REFERENCES " + TABLE_SHOP_LISTS + "(" + COLUMN_ID + ") ON DELETE CASCADE, "
+            + COLUMN_PRODUCT_ID
             + " integer, " + COLUMN_QUANTITY
             + " integer, " + COLUMN_MEASURE_ID
             + " integer, " + COLUMN_STATE
