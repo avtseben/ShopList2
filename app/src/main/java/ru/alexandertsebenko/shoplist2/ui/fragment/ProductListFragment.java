@@ -75,7 +75,7 @@ public class ProductListFragment extends Fragment {
         setUpRecyclerView(view);
         setUpItemTouchHelper(ShopListActivity.LIST_PREPARE_STATE);
         setupSendButton(view);
-        setupFab(view);
+//        setupFab(view);
         return view;
     }
     private void createNewShopList(){
@@ -142,10 +142,6 @@ public class ProductListFragment extends Fragment {
         addProductToList(product);
         mAdapter = new ShopListAdapter(getContext(),mParentItemList);
         mRecyclerView.setAdapter(mAdapter);
-    }
-    public void saveList(){
-        Toast.makeText(getContext(),"saveListCalled",Toast.LENGTH_SHORT).show();
-
     }
     public void setUpItemTouchHelper(final int state){
 
@@ -217,28 +213,6 @@ public class ProductListFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         this.listener = (OnSendButtonClickListener) context;
-    }
-    private void setupFab(View view) {
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mState) {
-                    case LIST_PREPARE_STATE:
-                        goShoping();
-                        break;
-                    case DO_SHOPPING_STATE:
-                        bougthProducts();
-                        break;
-                }
-            }
-        });
-    }
-    private void goShoping(){
-        mState = DO_SHOPPING_STATE;
-    }
-    private void bougthProducts(){
-        Toast.makeText(getContext(),"Купил",Toast.LENGTH_SHORT).show();
     }
 }
 
