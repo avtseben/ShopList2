@@ -98,7 +98,10 @@ public class ProductListFragment extends Fragment {
         mShopList = ShopListPojo;
         List<ProductInstance> pil = mDataSource.getProductInstancesByShopListId(mShopList.getId());
         for(ProductInstance pinst : pil) {
-            smartAdd(pinst);
+            //Добавляем в список только экземпляры у которых статус "в списке"
+            if(pinst.getState() == ProductInstance.IN_LIST) {
+                smartAdd(pinst);
+            }
         }
     }
     //Формируем списко для адаптера
@@ -169,13 +172,11 @@ public class ProductListFragment extends Fragment {
                         if(viewHolder.getClass().equals(ChildProductViewHolder.class)) {
                             int position = viewHolder.getAdapterPosition();
                             ProductInstance pi = ((ProductInstance)mAdapter.getListItem(position));
-                            if(direction == ItemTouchHelper.RIGHT &&
-                                    state == ShopListActivity.DO_SHOPPING_STATE) {
+                            if(direction == ItemTouchHelper.RIGHT) {
                                 mAdapter.deleteProductInstance(position);
-                                //TODO сдесь нужно класть в адаптер корзины
-                                pi.setState(ProductInstance.IN_BASKET);
+                                pi.setState(ProductInstance.BOUGHT);
                                 mDataSource.updateProductInstanceState(pi.getId(),
-                                        ProductInstance.IN_BASKET);
+                                        ProductInstance.BOUGHT);
                             } else if(direction == ItemTouchHelper.LEFT) {
                                 mAdapter.deleteProductInstance(position);
                                 pi.setState(ProductInstance.DELETED);//TODO возможно state DELETED не нужен - просто удалять
