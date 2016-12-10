@@ -4,7 +4,7 @@
     android:layout_marginLeft="@dimen/child_item_left_margin"
     android:layout_marginRight="@dimen/child_item_right_margin"
     android:layout_width="@dimen/child_item_width"
-    android:layout_height="@dimen/child_item_height"
+    android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/child_item_corner_radius"
     android:id="@+id/child_item_card_view"
     xmlns:android="http://schemas.android.com/apk/res/android">
