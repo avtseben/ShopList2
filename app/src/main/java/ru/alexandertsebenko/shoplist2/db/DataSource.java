@@ -56,9 +56,16 @@ public class DataSource {
     }
     public List<Product> getProductByNameMatches(String query) {
         ArrayList<Product> list = new ArrayList<>();
-        Cursor cursor = mDataBase.query(TABLE,
-                null,//Нужны все поля//TODO переделать нужно явно указывать поля
-                DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%'",
+        String queryFistCharUpperCase = query.substring(0,1).toUpperCase() + query.substring(1);
+        Cursor cursor = mDataBase.query(
+                TABLE,
+                new String[]{
+                        DbHelper.COLUMN_ID,
+                        DbHelper.COLUMN_CATEGORY,
+                        DbHelper.COLUMN_NAME,
+                        DbHelper.COLUMN_CAT_IMAGE},
+                DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%' OR " +
+                DbHelper.COLUMN_NAME + " LIKE " + "'%" + queryFistCharUpperCase + "%'",
                 null,null,null,null);
         cursor.moveToFirst();
         while (!cursor.isAfterLast()){
