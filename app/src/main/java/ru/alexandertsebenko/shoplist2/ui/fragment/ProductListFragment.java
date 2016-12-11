@@ -81,6 +81,7 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu,menu);
+        //Setup search item
         MenuItem searchItem = menu.findItem(R.id.search_item);
         final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
         autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(getContext()));
@@ -95,6 +96,17 @@ public class ProductListFragment extends Fragment {
                 addProduct(product);
             }
         });
+        //Setup send item
+        MenuItem sendItem = menu.findItem(R.id.send_button_in_menu);
+        sendItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                if(listener != null){
+                    listener.onSendButtonClicked(mShopList);
+                }
+                return true;
+            }
+        });
     }
     @Nullable
     @Override
@@ -104,7 +116,7 @@ public class ProductListFragment extends Fragment {
 
         setUpRecyclerView(view);
         setUpItemTouchHelper(ShopListActivity.LIST_PREPARE_STATE);
-        setupSendButton(view);
+//        setupSendButton(view);
         return view;
     }
     private void createNewShopList(){
@@ -223,7 +235,7 @@ public class ProductListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void setupSendButton(View view){
+/*    private void setupSendButton(View view){
         Button btn = (Button) view.findViewById(R.id.send_button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -233,7 +245,7 @@ public class ProductListFragment extends Fragment {
                 }
             }
         });
-    }
+    }*/
     private OnSendButtonClickListener listener;
     public interface OnSendButtonClickListener {
         void onSendButtonClicked(ShopList shopListPojo);
