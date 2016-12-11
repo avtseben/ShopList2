@@ -83,63 +83,6 @@ public class ShopListActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu,menu);
-        MenuItem searchItem = menu.findItem(R.id.search_item);
-        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
-        autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(this));
-        autoCompleteTextView.setWidth(800);
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product product = (Product) parent.getItemAtPosition(position);
-                autoCompleteTextView.setText("");
-                productSelected(product);
-            }
-        });
-
-//        setSearchBoxInActionBar();
-        return true;
-    }
-    //TODO:Разобраться как правильно раскрывать поисковый View
-    //при нажатии на эконку лупы в меню
-    //TODO:добавить голосовой поиск
-    //TODO:добавить крестик в AutoCompleteTextView чтобы можно было
-    // удалить слово в одно нажатие
-    private void setSearchBoxInActionBar(){
-        ActionBar actionBar = getSupportActionBar();
-        assert actionBar != null;
-        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM
-                | ActionBar.DISPLAY_USE_LOGO
-                | ActionBar.DISPLAY_SHOW_HOME
-                | ActionBar.DISPLAY_HOME_AS_UP);
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View v = inflater.inflate(R.layout.actionbar_search, null);
-        mAcTextView =  (AutoCompleteTextView) v.findViewById(R.id.search_box);
-
-        mSearchAdapter = new SearchAutoCompleteAdapter(this);
-        mAcTextView.setAdapter(mSearchAdapter);
-        mAcTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Product product = (Product) parent.getItemAtPosition(position);
-                mAcTextView.setText("");
-                productSelected(product);
-            }
-        });
-        actionBar.setCustomView(v);
-    }
-    private void productSelected(Product product) {
-        ProductListFragment plf = (ProductListFragment) mFragManager.findFragmentByTag(LIST_FRAGMENT_TAG);
-        //Всё. Продукт мы нашли, теперь передаём его фрагменту которы отвечает за работу со списком:
-        //запись в БД, RecyclerView и тд
-        plf.addProduct(product);
-    }
-
     /**В фрагменте списка нажали кнопку отправить список
      * переходим к фрагменту формирования списка людей кому отправлять
      * список

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -76,25 +78,24 @@ public class ProductListFragment extends Fragment {
         }
     }
 
-//    @Override
-/*    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu,menu);
-//        LayoutInflater inflater1 = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = inflater1.inflate(R.layout.actionbar_search, null);
-        final AutoCompleteTextView autoCompleteTextView =  (AutoCompleteTextView) getActivity().findViewById(R.id.search_box);
-        SearchAutoCompleteAdapter adapter = new SearchAutoCompleteAdapter(MyApplication.getAppContext());
-        autoCompleteTextView.setAdapter(adapter);
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
+        autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(getContext()));
+        autoCompleteTextView.setWidth(800);//TODO without this it would wrap input chars
+        autoCompleteTextView.setHint("insert product");
         autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Product product = (Product) parent.getItemAtPosition(position);
-                autoCompleteTextView.setHint("введите название продукта");
                 autoCompleteTextView.setText("");
+                addProduct(product);
             }
         });
-//        getActivity().getActionBar().setCustomView(v);
-    }*/
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
