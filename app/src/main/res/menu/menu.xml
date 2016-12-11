@@ -3,9 +3,16 @@
     xmlns:my="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:title="Поиск"
-        android:id="@+id/search_record"
-        android:icon="@drawable/ic_search_black_24dp"
+    <item android:title="Добавить продукт"
+
+        android:id="@+id/search_item"
+        android:icon="@drawable/ic_add_black_24dp"
         my:showAsAction="always|collapseActionView"
         my:actionViewClass="android.widget.AutoCompleteTextView" />
+
+    <item android:title="Добавить продукт"
+        android:id="@+id/send_button_in_menu"
+        android:icon="@drawable/ic_send_black_24dp"
+        my:showAsAction="always|collapseActionView"
+        />
 </menu>

@@ -5,14 +5,17 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
@@ -84,7 +87,21 @@ public class ShopListActivity extends AppCompatActivity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu,menu);
-        setSearchBoxInActionBar();
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        final AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) MenuItemCompat.getActionView(searchItem);
+        autoCompleteTextView.setAdapter(new SearchAutoCompleteAdapter(this));
+        autoCompleteTextView.setWidth(800);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product product = (Product) parent.getItemAtPosition(position);
+                autoCompleteTextView.setText("");
+                productSelected(product);
+            }
+        });
+
+//        setSearchBoxInActionBar();
         return true;
     }
     //TODO:Разобраться как правильно раскрывать поисковый View

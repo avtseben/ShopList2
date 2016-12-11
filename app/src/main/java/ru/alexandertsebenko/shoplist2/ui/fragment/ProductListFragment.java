@@ -7,13 +7,18 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -29,7 +34,9 @@ import ru.alexandertsebenko.shoplist2.ui.activity.ShopListActivity;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ChildProductViewHolder;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ParentItem;
 import ru.alexandertsebenko.shoplist2.datamodel.Product;
+import ru.alexandertsebenko.shoplist2.ui.adapter.SearchAutoCompleteAdapter;
 import ru.alexandertsebenko.shoplist2.ui.adapter.ShopListAdapter;
+import ru.alexandertsebenko.shoplist2.utils.MyApplication;
 
 public class ProductListFragment extends Fragment {
 
@@ -55,6 +62,8 @@ public class ProductListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        hasOptionsMenu();
+        setHasOptionsMenu(true);
         mDataSource = new DataSource(getContext());
         mDataSource.open();
         mParentItemList = new ArrayList<>();
@@ -66,6 +75,26 @@ public class ProductListFragment extends Fragment {
         createNewShopList();//TODO создавать список только если добавили продукт. И удалять списко если в нём не осталось продуктов (все удалили)
         }
     }
+
+//    @Override
+/*    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu,menu);
+//        LayoutInflater inflater1 = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//        View v = inflater1.inflate(R.layout.actionbar_search, null);
+        final AutoCompleteTextView autoCompleteTextView =  (AutoCompleteTextView) getActivity().findViewById(R.id.search_box);
+        SearchAutoCompleteAdapter adapter = new SearchAutoCompleteAdapter(MyApplication.getAppContext());
+        autoCompleteTextView.setAdapter(adapter);
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Product product = (Product) parent.getItemAtPosition(position);
+                autoCompleteTextView.setHint("введите название продукта");
+                autoCompleteTextView.setText("");
+            }
+        });
+//        getActivity().getActionBar().setCustomView(v);
+    }*/
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,7 +104,6 @@ public class ProductListFragment extends Fragment {
         setUpRecyclerView(view);
         setUpItemTouchHelper(ShopListActivity.LIST_PREPARE_STATE);
         setupSendButton(view);
-//        setupFab(view);
         return view;
     }
     private void createNewShopList(){
