@@ -7,13 +7,6 @@
     <ImageView
         android:layout_width="110dp"
         android:layout_height="90dp"
-        android:id="@+id/iv_parent_background"
-        android:src="@drawable/label"
-        android:elevation="20dp"
-        />
-    <ImageView
-        android:layout_width="77dp"
-        android:layout_height="63dp"
         android:id="@+id/iv_category"
         android:elevation="20dp"
         android:layout_centerVertical="true"
