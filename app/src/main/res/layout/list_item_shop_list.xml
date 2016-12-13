@@ -4,20 +4,29 @@
     android:layout_marginTop="40dp"
         android:layout_marginLeft="@dimen/child_item_left_margin"
         android:layout_marginRight="@dimen/child_item_right_margin"
-        android:layout_width="@dimen/child_item_width"
-        android:layout_height="@dimen/child_item_height"
-        app:cardCornerRadius="50dp"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        app:cardCornerRadius="20dp"
         android:id="@+id/top_list_item"
         xmlns:android="http://schemas.android.com/apk/res/android">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_margin="10dp"
+                android:layout_centerHorizontal="true"
+                android:id="@+id/image_in_shopList_title" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/child_item_left_margin"
                 android:layout_marginRight="@dimen/child_item_right_margin"
+                android:layout_below="@+id/image_in_shopList_title"
+                android:layout_centerHorizontal="true"
                 android:id="@+id/tv_list_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 />
@@ -26,9 +35,11 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_list_date"
                 android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_centerHorizontal="true"
                 android:layout_below="@+id/tv_list_name"
                 android:layout_alignLeft="@+id/tv_list_name"
                 android:layout_alignStart="@+id/tv_list_name" />
+
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>

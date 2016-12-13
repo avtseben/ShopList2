@@ -4,8 +4,10 @@ package ru.alexandertsebenko.shoplist2.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 import android.widget.CursorAdapter;
 
@@ -134,7 +136,14 @@ public class DataSource {
         mDataBase.delete(DbHelper.TABLE_PRODUCT_INSTANCES,
                 DbHelper.COLUMN_ID + " = " + id, null);
     }
-
+    public long getListSizeByShopListId(long id) {
+        SQLiteStatement s = mDataBase.compileStatement( "select count(*) from " +
+                DbHelper.TABLE_PRODUCT_INSTANCES +
+                " where " +
+                DbHelper.COLUMN_SHOPLIST_ID +
+                " = " + id + ";");
+         return s.simpleQueryForLong();
+    }
     public List<ShopList> getAllLists() {
         List<ShopList> list = new ArrayList<>();
         Cursor cursor = mDataBase.query(DbHelper.TABLE_SHOP_LISTS,
@@ -151,6 +160,23 @@ public class DataSource {
         return list;
     }
 
+    public List<ShopList> getAllListsWithInnerList() {
+        List<ShopList> list = new ArrayList<>();
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_SHOP_LISTS,
+                new String[]{DbHelper.COLUMN_ID,DbHelper.COLUMN_DATE,DbHelper.COLUMN_NAME},
+                null,null,null,null,null);
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()){
+            long shListId = cursor.getLong(0);
+            list.add(new ShopList(
+                    shListId,
+                    cursor.getLong(1),
+                    cursor.getString(2),
+                    getProductInstancesByShopListId(shListId)));
+            cursor.moveToNext();
+        }
+        return list;
+    }
     public void deleteShopListById(long id) {
         mDataBase.delete(DbHelper.TABLE_SHOP_LISTS,
                 DbHelper.COLUMN_ID + " = " + id,null);

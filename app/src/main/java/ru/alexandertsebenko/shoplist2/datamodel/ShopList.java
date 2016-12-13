@@ -22,6 +22,12 @@ public class ShopList implements Parcelable{
         this.dateMilis = date;
         this.name = name;
     }
+    public ShopList(long id, long date, String name,List<ProductInstance> prodList){
+        this.id = id;
+        this.dateMilis = date;
+        this.name = name;
+        this.prodList = prodList;
+    }
     public void addProductInstance(ProductInstance prodInstance){
         prodList.add(prodInstance);
     }
@@ -80,5 +86,9 @@ public class ShopList implements Parcelable{
         id = parcel.readLong();
         dateMilis = parcel.readLong();
         name = parcel.readString();
+    }
+
+    public List<ProductInstance> getProdList() {
+        return prodList;
     }
 }

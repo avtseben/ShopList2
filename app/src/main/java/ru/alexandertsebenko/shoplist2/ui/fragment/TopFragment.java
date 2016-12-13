@@ -97,7 +97,7 @@ public class TopFragment extends Fragment {
         mRecyclerView = (RecyclerView)view.findViewById(R.id.rv_top);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),
                 LinearLayoutManager.HORIZONTAL,false));
-        mTopList = mDataSource.getAllLists();
+        mTopList = mDataSource.getAllListsWithInnerList();
         mAdapter = new TopListAdapter(mTopList);
         mAdapter.setOnItemClickListener(new TopListAdapter.OnClickListener() {
             @Override
