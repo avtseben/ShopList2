@@ -13,6 +13,7 @@ import android.widget.CursorAdapter;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.datamodel.PeoplePleaseBuy;
@@ -55,6 +56,97 @@ public class DataSource {
         return mDataBase.query(TABLE,
                 new String[]{ID,PNAME,PCATEG},
                 null,null,null,null,null);
+    }
+    public List<Product> getSortedProductListByNameMatches(String query) {
+        List<Product> list = new LinkedList<>();
+        String queryFistCharUpperCase = query.substring(0,1).toUpperCase() + query.substring(1);
+        Cursor cursor = mDataBase.query(
+                TABLE,
+                new String[]{
+                        DbHelper.COLUMN_ID,
+                        DbHelper.COLUMN_CATEGORY,
+                        DbHelper.COLUMN_NAME,
+                        DbHelper.COLUMN_CAT_IMAGE},
+                DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%' OR " +
+                        DbHelper.COLUMN_NAME + " LIKE " + "'%" + queryFistCharUpperCase + "%'",
+                null,null,null,null);
+        cursor.moveToFirst();
+        //Variables for sort
+        int nameRatio = 0;
+        int maxFreq = 0;
+        int secondMaxFreq = 0;
+        while (!cursor.isAfterLast()){
+            //Curson data
+            int productId = cursor.getInt(0);
+            String productCategory = cursor.getString(1);
+            String productName = cursor.getString(2);
+            String productCatImage = cursor.getString(3);
+            int frequencyOfUse = 0;//Dummy, need to be get from Cursor
+            Product p = new Product(productId,productCategory,productName,productCatImage);
+            //Pattern to lowercase
+            String pattern = query.toLowerCase();
+            String prodNameLowerCase = productName.toLowerCase();
+            if(prodNameLowerCase.startsWith(pattern) || prodNameLowerCase.matches("(.*)\\s" + pattern + "(.*)") && frequencyOfUse != 0) {
+                int index;
+                if(frequencyOfUse >= maxFreq) {
+                    index = 0;
+                    secondMaxFreq = maxFreq;
+                    maxFreq = frequencyOfUse;
+                    p.setName(p.getName() + 1 + " nameRatio " + nameRatio);
+                } else if (frequencyOfUse >= secondMaxFreq && frequencyOfUse < maxFreq) {
+                    index = 1;
+                }
+                else {
+                    index = nameRatio;
+                }
+                list.add(index, p);
+                nameRatio++;
+            } else if (productName.matches("(.*)\\s" + pattern + "(.*)")) {
+                int index = 1 * nameRatio;
+                list.add(index, p);
+                p.setName(p.getName() + 2);
+                nameRatio++;
+            } else {
+                list.add(p);
+            }
+            cursor.moveToNext();
+        }
+        return list;
+
+
+/*
+        List<Product> sortedProductList = new LinkedList<Product>();
+        String pattern = "ко";
+        int nameRatio = 0;
+        int maxFreq = 0;
+        int secondMaxFreq = 0;
+        for(Product p : prodList) {
+            String productName = p.getName().toLowerCase();
+            if(productName.startsWith(pattern) || productName.matches("(.*)\\s" + pattern + "(.*)") && p.getFrequencyOfUse() != 0) {
+                int index;
+                if(p.getFrequencyOfUse() > maxFreq) {
+                    index = 0;
+                    secondMaxFreq = maxFreq;
+                    maxFreq = p.getFrequencyOfUse();
+                } else if (p.getFrequencyOfUse() >= secondMaxFreq && p.getFrequencyOfUse() < maxFreq) {
+                    index = 1;
+                }
+                else {
+                    index = nameRatio;
+                }
+                sortedProductList.add(index, p);
+                nameRatio++;
+            } else if (productName.matches("(.*)\\s" + pattern + "(.*)")) {
+                int index = 1 * nameRatio;
+                sortedProductList.add(index, p);
+            } else {
+                sortedProductList.add(p);
+            }
+        }
+        for(Product p : sortedProductList){
+            System.out.println(p.getName());
+        }
+        */
     }
     public List<Product> getProductByNameMatches(String query) {
         ArrayList<Product> list = new ArrayList<>();

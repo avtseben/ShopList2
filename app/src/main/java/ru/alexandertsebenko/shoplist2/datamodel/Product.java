@@ -33,6 +33,10 @@ public class Product{
         return image;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

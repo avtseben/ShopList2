@@ -447,6 +447,7 @@
 	name = "Приправы"
 	image = "seasoning">
 		<product>Гвоздика</product>
+		<product>Крахмал</product>
 		<product>Кардамон</product>
 		<product>Корица</product>
 		<product>Лавровый лист</product>
@@ -587,6 +588,15 @@
 		<product>Папоротник по-корейсик</product>
 		<product>Курица-гриль</product>
         <product>test</product>
+</category>
+
+<category
+	name = "Закуски"
+	image = "snacks">
+		<product>Чипсы</product>
+		<product>Сухарики</product>
+		<product>Кириешки</product>
+		<product>Орешки</product>
 </category>
 
 </products>
