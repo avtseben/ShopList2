@@ -77,12 +77,11 @@ public class DataSource {
         int maxFreq = 0;
         int secondMaxFreq = 0;
         while (!cursor.isAfterLast()){
-            //Curson data
+            //Cursor data
             int productId = cursor.getInt(0);
             String productCategory = cursor.getString(1);
             String productName = cursor.getString(2);
             String productCatImage = cursor.getString(3);
-//            int frequencyOfUse = 0;//Dummy, need to be get from Cursor
             int frequencyOfUse = cursor.getInt(4);
             Product p = new Product(productId,productCategory,productName,productCatImage);
             //Pattern to lowercase
@@ -95,12 +94,12 @@ public class DataSource {
                     index = 0;
                     secondMaxFreq = maxFreq;
                     maxFreq = frequencyOfUse;
-                    p.setName(p.getName() + " if 1," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
+                    //p.setName(p.getName() + " if 1," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                 } else if (frequencyOfUse >= secondMaxFreq && frequencyOfUse < maxFreq) {
                     index = 1;
                 }
                 else {
-                    p.setName(p.getName() + " if 1.5," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
+                    //p.setName(p.getName() + " if 1.5," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                     index = nameRatio;
                 }
                 list.add(index, p);
@@ -108,49 +107,15 @@ public class DataSource {
             } else if (productName.matches("(.*)\\s" + pattern + "(.*)")) {
                 int index = nameRatio;
                 list.add(index, p);
-                p.setName(p.getName() + " if 2," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
+                //p.setName(p.getName() + " if 2," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                 nameRatio++;
             } else {
+                //p.setName(p.getName() + " else " + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                 list.add(p);
             }
             cursor.moveToNext();
         }
         return list;
-
-
-/*
-        List<Product> sortedProductList = new LinkedList<Product>();
-        String pattern = "ко";
-        int nameRatio = 0;
-        int maxFreq = 0;
-        int secondMaxFreq = 0;
-        for(Product p : prodList) {
-            String productName = p.getName().toLowerCase();
-            if(productName.startsWith(pattern) || productName.matches("(.*)\\s" + pattern + "(.*)") && p.getFrequencyOfUse() != 0) {
-                int index;
-                if(p.getFrequencyOfUse() > maxFreq) {
-                    index = 0;
-                    secondMaxFreq = maxFreq;
-                    maxFreq = p.getFrequencyOfUse();
-                } else if (p.getFrequencyOfUse() >= secondMaxFreq && p.getFrequencyOfUse() < maxFreq) {
-                    index = 1;
-                }
-                else {
-                    index = nameRatio;
-                }
-                sortedProductList.add(index, p);
-                nameRatio++;
-            } else if (productName.matches("(.*)\\s" + pattern + "(.*)")) {
-                int index = 1 * nameRatio;
-                sortedProductList.add(index, p);
-            } else {
-                sortedProductList.add(p);
-            }
-        }
-        for(Product p : sortedProductList){
-            System.out.println(p.getName());
-        }
-        */
     }
     public List<Product> getProductByNameMatches(String query) {
         ArrayList<Product> list = new ArrayList<>();
