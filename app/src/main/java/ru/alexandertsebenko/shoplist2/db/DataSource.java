@@ -66,7 +66,8 @@ public class DataSource {
                         DbHelper.COLUMN_ID,
                         DbHelper.COLUMN_CATEGORY,
                         DbHelper.COLUMN_NAME,
-                        DbHelper.COLUMN_CAT_IMAGE},
+                        DbHelper.COLUMN_CAT_IMAGE,
+                        DbHelper.COLUMN_FREQUENCY_OF_USE},
                 DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%' OR " +
                         DbHelper.COLUMN_NAME + " LIKE " + "'%" + queryFistCharUpperCase + "%'",
                 null,null,null,null);
@@ -81,30 +82,33 @@ public class DataSource {
             String productCategory = cursor.getString(1);
             String productName = cursor.getString(2);
             String productCatImage = cursor.getString(3);
-            int frequencyOfUse = 0;//Dummy, need to be get from Cursor
+//            int frequencyOfUse = 0;//Dummy, need to be get from Cursor
+            int frequencyOfUse = cursor.getInt(4);
             Product p = new Product(productId,productCategory,productName,productCatImage);
             //Pattern to lowercase
             String pattern = query.toLowerCase();
             String prodNameLowerCase = productName.toLowerCase();
+            //если патерн в начале строки слова или (в начале слова с условием что продукт используем)
             if(prodNameLowerCase.startsWith(pattern) || prodNameLowerCase.matches("(.*)\\s" + pattern + "(.*)") && frequencyOfUse != 0) {
                 int index;
                 if(frequencyOfUse >= maxFreq) {
                     index = 0;
                     secondMaxFreq = maxFreq;
                     maxFreq = frequencyOfUse;
-                    p.setName(p.getName() + 1 + " nameRatio " + nameRatio);
+                    p.setName(p.getName() + " if 1," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                 } else if (frequencyOfUse >= secondMaxFreq && frequencyOfUse < maxFreq) {
                     index = 1;
                 }
                 else {
+                    p.setName(p.getName() + " if 1.5," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                     index = nameRatio;
                 }
                 list.add(index, p);
                 nameRatio++;
             } else if (productName.matches("(.*)\\s" + pattern + "(.*)")) {
-                int index = 1 * nameRatio;
+                int index = nameRatio;
                 list.add(index, p);
-                p.setName(p.getName() + 2);
+                p.setName(p.getName() + " if 2," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                 nameRatio++;
             } else {
                 list.add(p);
@@ -339,5 +343,12 @@ public class DataSource {
                      pi.getGlobalId());
         }
 
+    }
+
+    public void setFrequencyOfUseForProductByProductId(int id) {
+        mDataBase.execSQL("update " + DbHelper.TABLE_PRODUCTS +
+                " set " + DbHelper.COLUMN_FREQUENCY_OF_USE +
+                " = " + DbHelper.COLUMN_FREQUENCY_OF_USE + " + 1" +
+                " where " + DbHelper.COLUMN_ID + "=" + id);
     }
 }

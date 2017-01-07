@@ -218,6 +218,7 @@ public class ProductListFragment extends Fragment {
                                 pi.setState(ProductInstance.BOUGHT);
                                 mDataSource.updateProductInstanceState(pi.getId(),
                                         ProductInstance.BOUGHT);
+                                mDataSource.setFrequencyOfUseForProductByProductId(pi.getProduct().getId());
                             } else if(direction == ItemTouchHelper.LEFT) {
                                 mAdapter.deleteProductInstance(position);
                                 pi.setState(ProductInstance.DELETED);//TODO возможно state DELETED не нужен - просто удалять

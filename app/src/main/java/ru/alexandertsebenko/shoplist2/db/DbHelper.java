@@ -36,9 +36,10 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String COLUMN_PEOPLE_NUMBER = "people_number";
     private static final String COLUMN_UPDATE = "updated_state";
     public static final String COLUMN_GLOBAL_UUID = "global_uuid";
+    public static final String COLUMN_FREQUENCY_OF_USE = "freq_of_use";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 16;
 
     //TODO рефакторить БД вынести категории в отдельную таблицу
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -46,7 +47,8 @@ public class DbHelper extends SQLiteOpenHelper{
             + " integer primary key autoincrement, " + COLUMN_CATEGORY
             + " text, " + COLUMN_NAME
             + " text, " + COLUMN_CAT_IMAGE
-            + " text);";
+            + " text, " + COLUMN_FREQUENCY_OF_USE
+            + " integer default 0);";
     private static final String SHOPLIST_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_SHOP_LISTS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_DATE

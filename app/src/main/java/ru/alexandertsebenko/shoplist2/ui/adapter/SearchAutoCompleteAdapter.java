@@ -55,7 +55,7 @@ public class SearchAutoCompleteAdapter extends BaseAdapter implements Filterable
             convertView = inflater.inflate(R.layout.search_dropdown_item,null);//Инфэйтим
         }
         Product product = (Product) getItem(position);
-        ((TextView) convertView.findViewById(R.id.text1)).setText(product.getName() + " " + position);
+        ((TextView) convertView.findViewById(R.id.text1)).setText(product.getName() + " listPosition: " + position);
 //        ((TextView) convertView.findViewById(R.id.text1)).setText(product.getName());
         ((TextView) convertView.findViewById(R.id.text2)).setText(product.getCategory());
 
