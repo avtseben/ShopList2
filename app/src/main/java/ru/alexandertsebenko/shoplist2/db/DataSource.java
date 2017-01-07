@@ -57,6 +57,16 @@ public class DataSource {
                 new String[]{ID,PNAME,PCATEG},
                 null,null,null,null,null);
     }
+
+    /**
+     * Запрашиваем в БД продукты запросом LIKE причём приходится запрашивать по заглавной
+     * и по строчной букве.
+     * Полученные строчки повторно обрабатываются и в итоговый List попадают только те продукты
+     * в чьих названиях подзапрос находится в начале слова. так же учитывется "популярность"
+     * продукта, чем чаще его покупают тем ближе к началю списка
+     * @param query
+     * @return
+     */
     public List<Product> getSortedProductListByNameMatches(String query) {
         List<Product> list = new LinkedList<>();
         String queryFistCharUpperCase = query.substring(0,1).toUpperCase() + query.substring(1);
@@ -75,7 +85,6 @@ public class DataSource {
         //Variables for sort
         int nameRatio = 0;
         int maxFreq = 0;
-        int secondMaxFreq = 0;
         while (!cursor.isAfterLast()){
             //Cursor data
             int productId = cursor.getInt(0);
@@ -83,7 +92,6 @@ public class DataSource {
             String productName = cursor.getString(2);
             String productCatImage = cursor.getString(3);
             int frequencyOfUse = cursor.getInt(4);
-            Product p = new Product(productId,productCategory,productName,productCatImage);
             //Pattern to lowercase
             String pattern = query.toLowerCase();
             String prodNameLowerCase = productName.toLowerCase();
@@ -92,50 +100,16 @@ public class DataSource {
                 int index;
                 if(frequencyOfUse >= maxFreq) {
                     index = 0;
-                    secondMaxFreq = maxFreq;
                     maxFreq = frequencyOfUse;
-                    //p.setName(p.getName() + " if 1," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
-                } else if (frequencyOfUse >= secondMaxFreq && frequencyOfUse < maxFreq) {
-                    index = 1;
                 }
                 else {
-                    //p.setName(p.getName() + " if 1.5," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
                     index = nameRatio;
                 }
-                list.add(index, p);
+                list.add(index, new Product(productId,productCategory,productName,productCatImage));
                 nameRatio++;
             } else if (productName.matches("(.*)\\s" + pattern + "(.*)")) {
-                int index = nameRatio;
-                list.add(index, p);
-                //p.setName(p.getName() + " if 2," + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
-                nameRatio++;
-            } else {
-                //p.setName(p.getName() + " else " + " nameRatio " + nameRatio + " freq: " + frequencyOfUse);
-                list.add(p);
+                list.add(new Product(productId,productCategory,productName,productCatImage));
             }
-            cursor.moveToNext();
-        }
-        return list;
-    }
-    public List<Product> getProductByNameMatches(String query) {
-        ArrayList<Product> list = new ArrayList<>();
-        String queryFistCharUpperCase = query.substring(0,1).toUpperCase() + query.substring(1);
-        Cursor cursor = mDataBase.query(
-                TABLE,
-                new String[]{
-                        DbHelper.COLUMN_ID,
-                        DbHelper.COLUMN_CATEGORY,
-                        DbHelper.COLUMN_NAME,
-                        DbHelper.COLUMN_CAT_IMAGE},
-                DbHelper.COLUMN_NAME + " LIKE " + "'%" + query + "%' OR " +
-                DbHelper.COLUMN_NAME + " LIKE " + "'%" + queryFistCharUpperCase + "%'",
-                null,null,null,null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            list.add(new Product(cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3)));
             cursor.moveToNext();
         }
         return list;
