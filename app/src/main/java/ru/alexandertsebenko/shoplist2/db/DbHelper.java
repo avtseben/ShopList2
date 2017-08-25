@@ -11,14 +11,15 @@ import java.util.List;
 
 import ru.alexandertsebenko.shoplist2.R;
 import ru.alexandertsebenko.shoplist2.datamodel.ProdCategory;
-import ru.alexandertsebenko.shoplist2.datamodel.Product;
 import ru.alexandertsebenko.shoplist2.utils.ProductXmlParser;
 
 public class DbHelper extends SQLiteOpenHelper{
 
     Context mContext;
     public static final String TABLE_PRODUCTS = "products";
-    public static final String TABLE_MEASURES = "measures";
+    public static final String TABLE_SHOPS = "shops";
+    public static final String TABLE_PACKS = "packs";
+    public static final String TABLE_PRICES = "prices";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_CATEGORY = "category";
     public static final String COLUMN_NAME = "name";
@@ -28,7 +29,6 @@ public class DbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_SHOPLIST_ID = "shoplist_id";
     public static final String COLUMN_PRODUCT_ID = "product_id";
     public static final String COLUMN_QUANTITY = "quantity";
-    public static final String COLUMN_MEASURE_ID = "measure_id";
     public static final String COLUMN_CAT_IMAGE = "category_image";
     public static final String COLUMN_STATE = "product_state";
     private static final String TABLE_PI_UPDATES = "product_intstances_updates_states";
@@ -37,9 +37,12 @@ public class DbHelper extends SQLiteOpenHelper{
     private static final String COLUMN_UPDATE = "updated_state";
     public static final String COLUMN_GLOBAL_UUID = "global_uuid";
     public static final String COLUMN_FREQUENCY_OF_USE = "freq_of_use";
+    public static final String COLUMN_PRICE = "price";
+    public static final String COLUMN_PACK_ID = "pack_id";
+    public static final String COLUMN_SHOP_ID = "shop_id";
 
     private static final String DATABASE_NAME = "shoplist.db";
-    private static final int DATABASE_VERSION = 16;
+    private static final int DATABASE_VERSION = 17;
 
     //TODO рефакторить БД вынести категории в отдельную таблицу
     private static final String PRODUCT_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
@@ -60,10 +63,11 @@ public class DbHelper extends SQLiteOpenHelper{
             + " integer REFERENCES " + TABLE_SHOP_LISTS + "(" + COLUMN_ID + ") ON DELETE CASCADE, "
             + COLUMN_PRODUCT_ID
             + " integer, " + COLUMN_QUANTITY
-            + " integer, " + COLUMN_MEASURE_ID
+            + " integer, " + COLUMN_PACK_ID
             + " integer, " + COLUMN_STATE
             + " integer, " + COLUMN_GLOBAL_UUID
-            + " text);";
+            + " text, " + COLUMN_SHOP_ID
+            + " integer);";
     private static final String PI_UPDATES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
             + TABLE_PI_UPDATES + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_PI_ID
@@ -71,10 +75,20 @@ public class DbHelper extends SQLiteOpenHelper{
             + " text, " + COLUMN_UPDATE
             + " text, " + COLUMN_DATE
             + " integer);";
-    private static final String MEASURES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
-            + TABLE_MEASURES + "(" + COLUMN_ID
+    private static final String PACKS_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PACKS + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_NAME
+            + " text, " + COLUMN_PRODUCT_ID
+            + " integer);";
+    private static final String SHOPS_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_SHOPS + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_NAME
             + " text);";
+    private static final String PRICES_TABLE_CREATE = "CREATE TABLE IF NOT EXISTS "
+            + TABLE_PRICES + "(" + COLUMN_SHOP_ID
+            + " integer, " + COLUMN_PACK_ID
+            + " integer, " + COLUMN_PRICE
+            + " integer);";
 
     public DbHelper(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -87,7 +101,9 @@ public class DbHelper extends SQLiteOpenHelper{
         database.execSQL(PRODUCT_INSTANCES_TABLE_CREATE);
         database.execSQL(SHOPLIST_TABLE_CREATE);
         database.execSQL(PI_UPDATES_TABLE_CREATE);
-        database.execSQL(MEASURES_TABLE_CREATE);
+        database.execSQL(PACKS_TABLE_CREATE);
+        database.execSQL(SHOPS_TABLE_CREATE);
+        database.execSQL(PRICES_TABLE_CREATE);
 
         //Load data
         ArrayList<String> inserts = makeArrayOfInserts();
@@ -97,9 +113,19 @@ public class DbHelper extends SQLiteOpenHelper{
         }
         //Set measures TODO заглушка нужно вынести в xml
         database.execSQL("INSERT INTO " +
-                TABLE_MEASURES + " (" +
+                TABLE_PACKS + " (" +
                 COLUMN_NAME + ") " +
                 "VALUES ('штука');");
+        database.execSQL("INSERT INTO " +
+                TABLE_SHOPS + " (" +
+                COLUMN_NAME + ") " +
+                "VALUES ('Домашний');");
+        database.execSQL("INSERT INTO " +
+                TABLE_PRICES + " (" +
+                COLUMN_SHOP_ID + " , " +
+                COLUMN_PACK_ID + " , " +
+                COLUMN_PRICE + ") " +
+                "VALUES ('1','1','50');");
     }
 
     @Override
@@ -108,7 +134,7 @@ public class DbHelper extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_INSTANCES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOP_LISTS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PI_UPDATES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEASURES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PACKS);
         onCreate(db);
     }
     private String makeSQLInsert(String category, String name, String image) {

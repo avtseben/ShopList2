@@ -4,14 +4,11 @@ package ru.alexandertsebenko.shoplist2.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
-import android.widget.CursorAdapter;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -131,7 +128,7 @@ public class DataSource {
                 cursor.getString(3));
     }
     public String getMeasureById(long id) {
-        Cursor cursor = mDataBase.query(DbHelper.TABLE_MEASURES,
+        Cursor cursor = mDataBase.query(DbHelper.TABLE_PACKS,
                 new String[]{DbHelper.COLUMN_NAME},
                 DbHelper.COLUMN_ID + " = " + id,
                 null,null,null,null);
@@ -153,7 +150,7 @@ public class DataSource {
         values.put(DbHelper.COLUMN_SHOPLIST_ID,listId);
         values.put(DbHelper.COLUMN_PRODUCT_ID,productId);
         values.put(DbHelper.COLUMN_QUANTITY,quantity);
-        values.put(DbHelper.COLUMN_MEASURE_ID,1);//TODO заглушка - убрать
+        values.put(DbHelper.COLUMN_PACK_ID,1);//TODO заглушка - убрать
         values.put(DbHelper.COLUMN_STATE,state);
         values.put(DbHelper.COLUMN_GLOBAL_UUID,uuid);
 
@@ -223,7 +220,7 @@ public class DataSource {
                 new String[]{DbHelper.COLUMN_ID,
                         DbHelper.COLUMN_PRODUCT_ID,
                         DbHelper.COLUMN_QUANTITY,
-                        DbHelper.COLUMN_MEASURE_ID,
+                        DbHelper.COLUMN_PACK_ID,
                         DbHelper.COLUMN_STATE},
                 DbHelper.COLUMN_SHOPLIST_ID+ " = " + id,
                 null,null,null,null);
@@ -248,7 +245,7 @@ public class DataSource {
                         DbHelper.COLUMN_GLOBAL_UUID,
                         DbHelper.COLUMN_PRODUCT_ID,
                         DbHelper.COLUMN_QUANTITY,
-                        DbHelper.COLUMN_MEASURE_ID},
+                        DbHelper.COLUMN_PACK_ID},
                 DbHelper.COLUMN_SHOPLIST_ID + " = " + id,
                 null,null,null,null);
         cursor.moveToFirst();
